@@ -67,9 +67,9 @@ class TkApp:
         print(self.search_entry.get())
         self.url = self.search_entry.get()
         try :
-            video_info = launch_download(self.download_ops,self.url)
+            launch_download(self.download_ops,self.url)
         except :
-            print("echec !!!!!!!!!!!!!!!!!!!!!!")
+            print("échec !!!!!!!!!!!!!!!!!!!!!!")
         
         
         #print(self.download_ops)
@@ -115,7 +115,7 @@ class TkApp:
         filedialog.Directory()
     
     def save_new_settings(self):
-        print("settings has been saved !")
+        #print("settings has been saved !")
         self.download_ops = convert_settings_for_yt_dlp(self.settings)
 
 

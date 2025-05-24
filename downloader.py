@@ -6,10 +6,14 @@ def fini():
 
 def launch_download(download_ops,url):
     with yt_dlp.YoutubeDL(download_ops) as ydl:
-        #ydl.download(['https://www.youtube.com/watch?v=dQw4w9WgXcQ'])'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        info = ydl.extract_info(url=url)
+        ydl.download(url=url)
         
-        title = info.get("title")
+        fini()
+
+
+def get_url_info(download_ops,url):
+    with yt_dlp.YoutubeDL(download_ops) as ydl:
+        info = ydl.extract_info(url=url,download=False)
         
         print(info.get("thumbnail"))
         video_info = {
@@ -18,43 +22,6 @@ def launch_download(download_ops,url):
         }
         fini()
         return video_info
-
-
-
-
-def move_video_to_folder(settings,video_info):
-    folder = settings["working_folder"] # --------------
-    
-    title = video_info["title"]
-    
-    cwd = os.getcwd()
-    
-    if settings["audio_only"]:
-        extention = ".mp3"
-    else:
-        extention = ".mp4"
-    
-    file = cwd+folder[1:]+"/"+title+extention
-    
-    file = file.replace("\\", "/")
-    
-    print(file)
-    
-    if os.path.isfile(file):
-        print(" is file --------")
-        try:
-            os.rename(file, folder+"/"+title+extention)
-            print("renamed")
-        except:
-            print("cannot rename")
-    else:
-        print("no file ---------")
-    
-    """if "D:/Programation/Python/Youtube_Dawnload/working_progress/Rick Astley - Never Gonna Give You Up (Official Music Video).mp3" == file:
-        print("True +++++++")
-    else:
-        print("false +++++++++++++")"""
-
 
 
 if __name__ == "__main__":
