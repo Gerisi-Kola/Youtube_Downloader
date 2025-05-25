@@ -77,13 +77,31 @@ class TkApp:
                                         )
         self.folder_button.pack(expand="yes",side="left")
         
-        self.open_folder_button = ttk.Button(self.settings_frame,
-                                            text = "Open Folder",
-                                            command=lambda : open_file_explorer(self.settings["save_folder"]),
-                                            takefocus=False
-                                            )
+        self.open_folder_button = ttk.Button(
+                                    self.settings_frame,
+                                    text = "Open Folder",
+                                    command=lambda : open_file_explorer\
+                                            (self.settings["save_folder"]),
+                                    takefocus=False
+                                    )
         self.open_folder_button.pack(expand="yes",side="left")
         
+        #   ----    ----    Quality    ----    ----
+        # set up variable
+        self.option_var = tk.StringVar(self.root)
+        
+        self.style.configure("TMenubutton",background = "white", padding=13, width = 6,font="bold 15")
+        
+        self.quality_option_menu = ttk.OptionMenu(
+                                        self.settings_frame,
+                                        self.option_var,
+                                        #self.settings["video_quality"],
+                                        *self.settings["all_video_quality"],
+                                        #command=self.option_changed
+                                        
+                                        
+                                        )
+        self.quality_option_menu.pack(side="right")
         
         
         
@@ -139,6 +157,10 @@ class TkApp:
     
     def open_folder(self):
         filedialog.Directory()
+    
+    def change_quality(self,quality):
+        
+        self.save_new_settings()
     
     def save_new_settings(self):
         #print("settings has been saved !")

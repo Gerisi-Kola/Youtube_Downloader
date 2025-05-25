@@ -4,7 +4,15 @@
         "working_folder" : "./working_progress",
         "working_folder_absolut" : "./working_progress",
         "save_folder" : "./videos",
-        "video_quality" : "720"
+        "video_quality" : "144",
+        "all_video_quality" : [
+            "144",
+            "360",
+            "480",
+            "720",
+            "1080",
+            "best"
+            ]
     },
     
     "original_settings" : {}
