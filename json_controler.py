@@ -8,7 +8,7 @@ def get_json(file_name):
 
 def save_json(file_name,data):
     file = open(file_name,"w")
-    file = json.dump(data)
+    json.dump(data,file, indent = 6)
     file.close()
 
 def save_bin(file_name):
@@ -18,5 +18,11 @@ def save_bin(file_name):
 
 
 if __name__ == "__main__":
-    a = get_json("settings.json")
-    print(a)
+    """a = get_json("settings.json")
+    print(a)"""
+    b = {
+        "a":1,
+        "b":2,
+        "c":3
+    }
+    save_json("./working_progress/file.log",b)

@@ -11,8 +11,8 @@ def launch_download(download_ops,url):
         fini()
 
 
-def get_url_info(download_ops,url):
-    with yt_dlp.YoutubeDL(download_ops) as ydl:
+def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
+    with yt_dlp.YoutubeDL() as ydl:
         info = ydl.extract_info(url=url,download=False)
         
         print(info.get("thumbnail"))
@@ -25,7 +25,7 @@ def get_url_info(download_ops,url):
 
 
 if __name__ == "__main__":
-    def my_hook(d):
+    """def my_hook(d):
         if d['status'] == 'finished':
             print('Done downloading, now converting ...')
             
@@ -42,4 +42,5 @@ if __name__ == "__main__":
     }
     url = "https://youtu.be/M2sUoA7FaEs?si=iJUFq5ztrVSZ7Mx"#"https://youtu.be/M2sUoA7FaEs?si=iJUFq5ztrVSZ7MxW"
     
-    launch_download(ydl_opts,url)
+    launch_download(ydl_opts,url)"""
+    print(get_url_info())

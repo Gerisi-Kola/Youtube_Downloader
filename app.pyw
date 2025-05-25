@@ -3,9 +3,11 @@ from tkinter import ttk
 from tkinter import filedialog
 #    ----    ----
 from settings_manager import convert_settings_for_yt_dlp
-from downloader import launch_download
-from path import get_absolut_path, open_file_explorer
-from history import today_log_get
+#from downloader import launch_download
+import downloader as dl
+#from path import get_absolut_path, open_file_explorer$
+import path
+import history as his
 
 class TkApp:
     def __init__(self, settings):
@@ -19,7 +21,7 @@ class TkApp:
         self.settings = settings["current_settings"]
         self.original_settings = settings["original_settings"]
         self.settings["working_folder_absolut"] = \
-                    get_absolut_path(self.settings["working_folder"])
+                    path.get_absolut_path(self.settings["working_folder"])
         
         self.download_ops = convert_settings_for_yt_dlp(self.settings)
         
@@ -27,7 +29,7 @@ class TkApp:
         self.style.configure("TButton", padding=11, background="ivory")
         self.style.configure("TEntry", padding=8, background="ivory")
         
-        self.history,self.history_file = today_log_get()
+        self.history,self.history_file = his.today_history_get()
         
         #   ----    ----    Frame    ----    ----
         self.search_frame = tk.Frame(self.root, bg="ivory")
@@ -83,7 +85,7 @@ class TkApp:
         self.open_folder_button = ttk.Button(
                                     self.settings_frame,
                                     text = "Open Folder",
-                                    command=lambda : open_file_explorer\
+                                    command=lambda : path.open_file_explorer\
                                             (self.settings["save_folder"]),
                                     takefocus=False
                                     )
@@ -114,7 +116,10 @@ class TkApp:
         print(self.search_entry.get())
         self.url = self.search_entry.get()
         try :
-            launch_download(self.download_ops,self.url)
+            info = dl.get_url_info(self.url)
+            #dl.launch_download(self.download_ops,self.url)
+            self.history = his.save_history_converter(self.history,self.url,info)
+            his.save_history(history=self.history,history_file=self.history_file)
         except :
             print("échec !!!!!!!!!!!!!!!!!!!!!!")
         
