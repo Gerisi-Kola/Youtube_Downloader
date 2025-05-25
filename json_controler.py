@@ -1,8 +1,6 @@
 import json
 
-#file = "./constant.json"
-
-def get_settings(file_name):
+def get_json(file_name):
     file = open(file_name,"r")
     data = json.load(file)
     file.close()
@@ -20,5 +18,5 @@ def save_bin(file_name):
 
 
 if __name__ == "__main__":
-    a = get_settings("settings.json")
+    a = get_json("settings.json")
     print(a)

@@ -5,6 +5,7 @@ from tkinter import filedialog
 from settings_manager import convert_settings_for_yt_dlp
 from downloader import launch_download
 from path import get_absolut_path, open_file_explorer
+from history import today_log_get
 
 class TkApp:
     def __init__(self, settings):
@@ -25,6 +26,8 @@ class TkApp:
         self.style = ttk.Style()
         self.style.configure("TButton", padding=11, background="ivory")
         self.style.configure("TEntry", padding=8, background="ivory")
+        
+        self.history,self.history_file = today_log_get()
         
         #   ----    ----    Frame    ----    ----
         self.search_frame = tk.Frame(self.root, bg="ivory")
@@ -168,6 +171,6 @@ class TkApp:
 
 
 if __name__ == "__main__":
-    from json_controler import get_settings
-    settings = get_settings("settings.json")
+    from json_controler import get_json
+    settings = get_json("settings.json")
     win = TkApp(settings=settings)

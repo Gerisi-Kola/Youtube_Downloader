@@ -2,4 +2,5 @@ working_progress/
 videos/
 __pycache__/
 .history/
+history/
 image/
