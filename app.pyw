@@ -120,8 +120,8 @@ class TkApp:
             #dl.launch_download(self.download_ops,self.url)
             self.history = his.save_history_converter(self.history,self.url,info)
             his.save_history(history=self.history,history_file=self.history_file)
-        except :
-            print("échec !!!!!!!!!!!!!!!!!!!!!!")
+        except Exception as e:
+            print("échec !!!!!!!!!!!!!!!!!!!!!!     ", e)
         
         
         #print(self.download_ops)
