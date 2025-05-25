@@ -4,7 +4,7 @@ import json
 
 def get_settings(file_name):
     file = open(file_name,"r")
-    data = json.load(data)
+    data = json.load(file)
     file.close()
     return data
 

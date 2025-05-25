@@ -7,3 +7,4 @@
 - il faut crée un fichier de l'historique des téléchargement
 - il faut pouvoir installer depuis un fichier *.txt* (ou alors un json ou je met toutes les info: url,titre,date)
 - il faut verifier si la vidéo existe déjà
+- il pourrait télécharger depuis ses playlist
