@@ -33,6 +33,7 @@ def read_file(file_name):
     return data
 
 def get_list_of_lines(file_name):
+    file_name = file_name.replace("\\","/")
     file = read_file(file_name)
     file = file.split("\n")
     return file

@@ -1,12 +1,11 @@
 import yt_dlp
-import os
 
 def fini():
     print("fini !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 def launch_download(download_ops,url):
     with yt_dlp.YoutubeDL(download_ops) as ydl:
-        ydl.download(url=url)
+        ydl.download([url])
         
         fini()
 

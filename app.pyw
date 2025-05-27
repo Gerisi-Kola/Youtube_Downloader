@@ -32,8 +32,13 @@ class TkApp:
         self.history,self.history_file = his.today_history_get()
         
         #   ----    ----    Frame    ----    ----
-        self.search_frame = tk.Frame(self.root, bg="ivory")
+        self.top_frame = tk.Frame(self.root, bg="ivory")
+        self.top_frame.pack(expand="yes")
+        self.search_frame = tk.Frame(self.top_frame, bg="ivory")
         self.search_frame.pack(expand="yes")
+        self.progress_frame = tk.Frame(self.top_frame, bg="ivory")
+        self.progress_frame.pack(expand="yes")
+        
         self.settings_frame = tk.Frame(self.root, bg="ivory")
         self.settings_frame.pack(expand="yes")
         self.mp4_mp3_frame = tk.Frame(self.settings_frame, bg="ivory")
@@ -53,6 +58,11 @@ class TkApp:
                                         )
         self.search_button.pack(side="left")
         
+        self.progressbar = ttk.Progressbar( self.progress_frame,
+                                            mode='indeterminate',
+                                            length=420
+                                            )
+        self.progressbar.pack(side="top", pady=20)
         
         #   ----    ----    mp3 or mp4    ----    ----
         self.mp3_or_mp4_label = tk.Label(self.mp4_mp3_frame,
@@ -103,8 +113,6 @@ class TkApp:
                                         #self.settings["video_quality"],
                                         *self.settings["all_video_quality"],
                                         #command=self.option_changed
-                                        
-                                        
                                         )
         self.quality_option_menu.pack(side="right")
         
@@ -114,17 +122,17 @@ class TkApp:
     
     def get_search(self):
         print(self.search_entry.get())
+        self.progressbar.start()
         self.url = self.search_entry.get()
         try :
             info = dl.get_url_info(self.url)
-            #dl.launch_download(self.download_ops,self.url)
+            dl.launch_download(self.download_ops,self.url)
             self.history = his.save_history_converter(self.history,self.url,info)
             his.save_history(history=self.history,history_file=self.history_file)
+            self.progressbar.stop()
         except Exception as e:
+            self.progressbar.stop()
             print("échec !!!!!!!!!!!!!!!!!!!!!!     ", e)
-        
-        
-        #print(self.download_ops)
     
     def mp3_command(self):
         if not self.settings["audio_only"]:
