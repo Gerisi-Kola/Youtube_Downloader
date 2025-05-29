@@ -1,4 +1,5 @@
 import yt_dlp
+import subprocess
 
 def fini():
     print("fini !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -22,6 +23,20 @@ def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
         fini()
         return video_info
 
+#"https://www.youtube.com/watch?v=2zjwbTaiwNQ"
+
+def launch_download_sub(yt, title="", path=""):
+    #return subprocess.run(["yt-dlp", "--version"], capture_output=True, text=True, shell=True)
+    #mv = ["&&", "mv", f"./tmp{title}", f"{path}/{title}"]
+    #yt += mv
+    try:
+        print(yt)
+        a = subprocess.run(yt, capture_output=True, text=True, shell=True)
+        #print(f"./tmp{title} \n {path}/{title}")
+        #subprocess.run(["mv", f"./tmp{title}", f"{path}/{title}"], capture_output=True, text=True, shell=True)
+        return a
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     """def my_hook(d):
@@ -42,4 +57,7 @@ if __name__ == "__main__":
     url = "https://youtu.be/M2sUoA7FaEs?si=iJUFq5ztrVSZ7Mx"#"https://youtu.be/M2sUoA7FaEs?si=iJUFq5ztrVSZ7MxW"
     
     launch_download(ydl_opts,url)"""
-    print(get_url_info())
+    #print(get_url_info())
+    #yt = ["yt-dlp", "-f bv*[height>=360]+ba", "-x", "https://www.youtube.com/watch?v=dQw4w9WgXcQ","-P ", "-ovideos/%(title)s.%(ext)s"]
+    yt = ["yt-dlp", "-f bv*[height>=quality]+ba", "-x","--audio-format mp3", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "-P ./tmp", "-o./videos/%(title)s.%(ext)s"]
+    print(launch_download_sub(yt))

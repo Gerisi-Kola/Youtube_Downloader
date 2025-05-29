@@ -1,10 +1,10 @@
 {
     "current_settings" : {
-        "audio_only" : true,
-        "working_folder" : "./working_progress",
-        "working_folder_absolut" : "./working_progress",
-        "save_folder" : "./videos",
-        "video_quality" : "144",
+        "audio_only" : "true",
+        "tmp_folder" : "./tmp",
+        "tmp_folder_absolut" : "./tmp",
+        "save_folder" : "D:/Programation/Python/Youtube_Download/videos",
+        "video_quality" : "360",
         "all_video_quality" : [
             "144",
             "360",
