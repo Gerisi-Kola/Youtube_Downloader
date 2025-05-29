@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 #    ----    ----
-from settings_manager import convert_settings_for_yt_dlp
+from settings_manager import convert_settings_for_yt_dlp_sub
 #from downloader import launch_download
 import downloader as dl
 #from path import get_absolut_path, open_file_explorer$
@@ -20,10 +20,10 @@ class TkApp:
         
         self.settings = settings["current_settings"]
         self.original_settings = settings["original_settings"]
-        self.settings["working_folder_absolut"] = \
-                    path.get_absolut_path(self.settings["working_folder"])
+        self.settings["tmp_folder_absolut"] = \
+                    path.get_absolut_path(self.settings["tmp_folder"])
         
-        self.download_ops = convert_settings_for_yt_dlp(self.settings)
+        
         
         self.style = ttk.Style()
         self.style.configure("TButton", padding=11, background="ivory")
@@ -117,19 +117,24 @@ class TkApp:
         self.quality_option_menu.pack(side="right")
         
         
+        self.url = self.search_entry.get()
+        self.download_ops = convert_settings_for_yt_dlp_sub(self.settings,self.url)
         
         self.root.mainloop()
     
     def get_search(self):
+        print("get_search")
         print(self.search_entry.get())
         self.progressbar.start()
         self.url = self.search_entry.get()
         try :
-            info = dl.get_url_info(self.url)
-            dl.launch_download(self.download_ops,self.url)
-            self.history = his.save_history_converter(self.history,self.url,info)
-            his.save_history(history=self.history,history_file=self.history_file)
-            self.progressbar.stop()
+            self.progressbar.start()
+            self.download_ops = convert_settings_for_yt_dlp_sub(self.settings,self.url)
+            #info = dl.get_url_info(self.url)
+            dl.launch_download_sub(self.download_ops,self.progressbar)
+            #self.history = his.save_history_converter(self.history,self.url,info)
+            #his.save_history(history=self.history,history_file=self.history_file)
+            
         except Exception as e:
             self.progressbar.stop()
             print("échec !!!!!!!!!!!!!!!!!!!!!!     ", e)
@@ -180,7 +185,7 @@ class TkApp:
     
     def save_new_settings(self):
         #print("settings has been saved !")
-        self.download_ops = convert_settings_for_yt_dlp(self.settings)
+        self.download_ops = convert_settings_for_yt_dlp_sub(self.settings,self.url)
 
 
 if __name__ == "__main__":

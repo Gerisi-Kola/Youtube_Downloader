@@ -1,4 +1,5 @@
 import yt_dlp
+import path as p
 
 def convert_settings_for_yt_dlp(settings):
     print(settings)
@@ -39,7 +40,7 @@ def convert_settings_for_yt_dlp_sub(settings,url):
     ydl_opts = ["yt-dlp"]
     audio_only = settings["audio_only"]
     tmp = settings["tmp_folder_absolut"]
-    path = settings["save_folder"]
+    path = p.get_absolut_path(settings["save_folder"])
     quality = settings["video_quality"]
     
     # mp3 or mp4
@@ -85,7 +86,7 @@ def convert_settings_for_yt_dlp_sub(settings,url):
     ydl_opts.append("--output")
     ydl_opts.append(f"{path}/%(title)s.mp4")
     
-    return ydl_opts, title, path
+    return ydl_opts
 
 if __name__ == "__main__":
     from json_controler import get_json
@@ -99,7 +100,7 @@ if __name__ == "__main__":
     
     ydl_opts,title,path = convert_settings_for_yt_dlp_sub(settings, "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     #print(ydl_opts)
-    d.launch_download_sub(ydl_opts,title,path)
+    d.launch_download_sub(ydl_opts)
     
     """ydl_opts = {
     'postprocessors': [{

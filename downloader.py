@@ -25,7 +25,7 @@ def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
 
 #"https://www.youtube.com/watch?v=2zjwbTaiwNQ"
 
-def launch_download_sub(yt, title="", path=""):
+def launch_download_sub(yt):
     #return subprocess.run(["yt-dlp", "--version"], capture_output=True, text=True, shell=True)
     #mv = ["&&", "mv", f"./tmp{title}", f"{path}/{title}"]
     #yt += mv

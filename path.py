@@ -15,4 +15,5 @@ def open_file_explorer(folder):
 
 def get_absolut_path(path):
     abs_path = os.path.abspath(path)
+    abs_path = abs_path.replace("\\", "/")
     return abs_path
