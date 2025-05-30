@@ -25,7 +25,7 @@ def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
 
 #"https://www.youtube.com/watch?v=2zjwbTaiwNQ"
 
-def launch_download_sub(yt):
+def launch_download_sub(yt,stop_progressbar):
     #return subprocess.run(["yt-dlp", "--version"], capture_output=True, text=True, shell=True)
     #mv = ["&&", "mv", f"./tmp{title}", f"{path}/{title}"]
     #yt += mv
@@ -34,6 +34,7 @@ def launch_download_sub(yt):
         a = subprocess.run(yt, capture_output=True, text=True, shell=True)
         #print(f"./tmp{title} \n {path}/{title}")
         #subprocess.run(["mv", f"./tmp{title}", f"{path}/{title}"], capture_output=True, text=True, shell=True)
+        stop_progressbar()
         return a
     except Exception as e:
         print(e)

@@ -3,11 +3,8 @@ from tkinter import ttk
 from tkinter import filedialog
 #    ----    ----
 from settings_manager import convert_settings_for_yt_dlp_sub
-#from downloader import launch_download
-import downloader as dl
-#from path import get_absolut_path, open_file_explorer$
 import path
-import history as his
+import download_manager
 
 class TkApp:
     def __init__(self, settings):
@@ -17,6 +14,8 @@ class TkApp:
         self.root.config(bg = "ivory")
         
         self.url = None #'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        
+        self.dl = download_manager.DowloadManager()
         
         self.settings = settings["current_settings"]
         self.original_settings = settings["original_settings"]
@@ -28,8 +27,6 @@ class TkApp:
         self.style = ttk.Style()
         self.style.configure("TButton", padding=11, background="ivory")
         self.style.configure("TEntry", padding=8, background="ivory")
-        
-        self.history,self.history_file = his.today_history_get()
         
         #   ----    ----    Frame    ----    ----
         self.top_frame = tk.Frame(self.root, bg="ivory")
@@ -123,21 +120,19 @@ class TkApp:
         self.root.mainloop()
     
     def get_search(self):
-        print("get_search")
-        print(self.search_entry.get())
-        self.progressbar.start()
         self.url = self.search_entry.get()
-        try :
-            self.progressbar.start()
-            self.download_ops = convert_settings_for_yt_dlp_sub(self.settings,self.url)
-            #info = dl.get_url_info(self.url)
-            dl.launch_download_sub(self.download_ops,self.progressbar)
-            #self.history = his.save_history_converter(self.history,self.url,info)
-            #his.save_history(history=self.history,history_file=self.history_file)
-            
-        except Exception as e:
-            self.progressbar.stop()
-            print("échec !!!!!!!!!!!!!!!!!!!!!!     ", e)
+        self.dl.download_and_save(self.settings,
+                                    self.url,
+                                    self.start_progressbar,
+                                    self.stop_progressbar
+                                    )
+    
+    
+    def start_progressbar(self):
+        self.progressbar.start()
+    
+    def stop_progressbar(self):
+        self.progressbar.stop()
     
     def mp3_command(self):
         if not self.settings["audio_only"]:
