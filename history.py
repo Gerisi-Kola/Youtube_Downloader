@@ -4,11 +4,19 @@ import json_controler as json
 
 def today_history_get():
     x = datetime.datetime.now()
+    print(x.strftime("%x"))
+    orignal_date = x.strftime("%x").replace("/","-")
+    print(orignal_date)
     
-    history_file = x.strftime("%x").replace("/","-")
-    history_file = list(history_file)
-    history_file[0:2],history_file[3:5] = history_file[3:5], history_file[0:2]
-    history_file.insert(6,"20")
+    orignal_date = list(orignal_date)
+    history_file = orignal_date.copy()
+    
+    history_file[0:2] = orignal_date[6:8]
+    history_file[3:5] = orignal_date[0:2]
+    history_file[6:8] = orignal_date[3:5]
+    
+    #history_file[0:2],history_file[3:5] = history_file[3:5], history_file[0:2]
+    history_file.insert(0,"20")
     history_file = "".join(history_file)
     history_file = "./history/"+history_file+".log"
     print(history_file)
@@ -34,6 +42,7 @@ def get_history_number(history={}):
     return num
 
 def save_history_converter(history={},url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",video_info={'title': 'Rick Astley - Never Gonna Give You Up (Official Music Video)', 'thumbnail': 'https://i.ytimg.com/vi_webp/dQw4w9WgXcQ/maxresdefault.webp'}):
+    #history = today_history_get()
     time = get_current_time()
     key = get_history_number(history)
     new_history = {

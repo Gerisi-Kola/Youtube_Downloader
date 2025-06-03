@@ -14,7 +14,7 @@ class DowloadManager:
     
     def history_manager(self,url,info_video):
         history = {}
-        history = his.save_history_converter(history,url,info_video)
+        history = his.save_history_converter(self.history,url,info_video)
         his.save_history(history=history,history_file=self.history_file)
     
     def download_and_save_launch_in_thread(self,settings,url,stop_progressbar):
