@@ -4,14 +4,31 @@ import subprocess
 def fini():
     print("fini !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
-def launch_download(download_ops,url):
+def launch_download(yt,stop_progressbar):
+    """ launch the download and if it has a error, launch the second type of download"""
+    try:
+        return launch_download_sub(yt,stop_progressbar)
+    except:
+        try:
+            raise
+            #launch_download_python(download_ops,url)
+        except Exception as e:
+            print(f"Error : {e}")
+
+def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
+    try:
+        return get_url_info_python(url)
+    except Exception as e:
+        print(f"Error : {e}")
+
+def launch_download_python(download_ops,url):
     with yt_dlp.YoutubeDL(download_ops) as ydl:
         ydl.download([url])
         
         fini()
 
 
-def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
+def get_url_info_python(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
     with yt_dlp.YoutubeDL() as ydl:
         info = ydl.extract_info(url=url,download=False)
         
@@ -26,14 +43,9 @@ def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
 #"https://www.youtube.com/watch?v=2zjwbTaiwNQ"
 
 def launch_download_sub(yt,stop_progressbar):
-    #return subprocess.run(["yt-dlp", "--version"], capture_output=True, text=True, shell=True)
-    #mv = ["&&", "mv", f"./tmp{title}", f"{path}/{title}"]
-    #yt += mv
     try:
         print(yt)
         a = subprocess.run(yt, capture_output=True, text=True, shell=True)
-        #print(f"./tmp{title} \n {path}/{title}")
-        #subprocess.run(["mv", f"./tmp{title}", f"{path}/{title}"], capture_output=True, text=True, shell=True)
         stop_progressbar()
         return a
     except Exception as e:

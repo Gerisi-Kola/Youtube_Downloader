@@ -13,7 +13,7 @@ class TkApp:
         self.root.title("Youtube mp4/mp3")
         self.root.config(bg = "ivory")
         
-        self.url = None #'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        self.url = "" #'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         
         self.dl = download_manager.DowloadManager()
         
@@ -25,8 +25,28 @@ class TkApp:
         
         
         self.style = ttk.Style()
-        self.style.configure("TButton", padding=11, background="ivory")
-        self.style.configure("TEntry", padding=8, background="ivory")
+        self.style.theme_use()
+        self.style.configure("TButton",
+                            padding=11,
+                            background="ivory"
+                            )
+        self.style.configure("TEntry",
+                            padding=8,
+                            background="ivory"
+                            )
+        self.style.configure("TMenubutton",
+                            background = "white",
+                            padding=13,
+                            width = 6,
+                            font="bold 15"
+                            )
+        self.style.configure("My.Horizontal.TProgressbar",
+                            background="lightblue",
+                            troughcolor="lightgray",
+                            bordercolor="darkblue",
+                            lightcolor="lightblue",
+                            darkcolor="darkblue"
+                            )
         
         #   ----    ----    Frame    ----    ----
         self.top_frame = tk.Frame(self.root, bg="ivory")
@@ -56,8 +76,10 @@ class TkApp:
         self.search_button.pack(side="left")
         
         self.progressbar = ttk.Progressbar( self.progress_frame,
-                                            mode='indeterminate',
-                                            length=420
+                                            #mode='indeterminate',
+                                            length=420,
+                                            orient="horizontal",
+                                            style="My.Horizontal.TProgressbar"
                                             )
         self.progressbar.pack(side="top", pady=20)
         
@@ -102,8 +124,6 @@ class TkApp:
         # set up variable
         self.option_var = tk.StringVar(self.root)
         
-        self.style.configure("TMenubutton",background = "white", padding=13, width = 6,font="bold 15")
-        
         self.quality_option_menu = ttk.OptionMenu(
                                         self.settings_frame,
                                         self.option_var,
@@ -121,7 +141,7 @@ class TkApp:
     
     def get_search(self):
         self.url = self.search_entry.get()
-        self.dl.download_and_save(self.settings,
+        self.dl.download_and_save_threads_manager(self.settings,
                                     self.url,
                                     self.start_progressbar,
                                     self.stop_progressbar
