@@ -9,15 +9,14 @@ class DowloadManager:
     def __init__(self):
         self.history,self.history_file = his.today_history_get()
     
-    def progressbar_manager(self,progressbar):  
+    def progressbar_manager(self,progressbar) -> None:  
         progressbar.start()
     
-    def history_manager(self,url,info_video):
-        #history = {}
+    def history_manager(self,url: str,info_video: dict) -> None:
         history = his.save_history_converter(self.history,url,info_video)
         his.save_history(history=history,history_file=self.history_file)
     
-    def download_and_save_launch_in_thread(self,settings,url,stop_progressbar):
+    def download_and_save_launch_in_thread(self,settings: dict, url: str, stop_progressbar) -> None:
         try:
             info_video = dl.get_url_info(url)
             
@@ -36,7 +35,7 @@ class DowloadManager:
             print("Error total download : ",e)
             stop_progressbar()
     
-    def download_and_save_threads_manager(self,settings,url,start_progressbar,stop_progressbar):
+    def download_and_save_threads_manager(self,settings: dict, url: str, start_progressbar, stop_progressbar) -> None:
         try :
             start_progressbar()
             thread = threading.Thread(target=lambda: self.download_and_save_launch_in_thread(

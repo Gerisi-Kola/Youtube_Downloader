@@ -1,38 +1,38 @@
 import json
 
-def get_json(file_name):
+def get_json(file_name: str) -> dict :
     file_name = file_name.replace("\\","/")
     file = open(file_name,"r")
     data = json.load(file)
     file.close()
     return data
 
-def save_json(file_name,data):
+def save_json(file_name: str, data: dict) -> None:
     file_name = file_name.replace("\\","/")
     file = open(file_name,"w")
     json.dump(data,file, indent = 4)
     file.close()
 
-def save_bin(file_name,data):
+def save_bin(file_name: str, data: dict) -> None:
     file_name = file_name.replace("\\","/")
     file = open(file_name,"wb")
     file.write(data)
     file.close()
 
-def save_file(file_name,data):
+def save_file(file_name: str, data: dict) -> None:
     file_name = file_name.replace("\\","/")
     file = open(file_name,"w")
     file.write(data)
     file.close()
 
-def read_file(file_name):
+def read_file(file_name: str) -> dict:
     file_name = file_name.replace("\\","/")
     file = open(file_name,"r")
     data = file.read()
     file.close()
     return data
 
-def get_list_of_lines(file_name):
+def get_list_of_lines(file_name: str) -> list:
     file_name = file_name.replace("\\","/")
     file = read_file(file_name)
     file = file.split("\n")

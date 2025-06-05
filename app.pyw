@@ -7,7 +7,7 @@ import path
 import download_manager
 
 class TkApp:
-    def __init__(self, settings):
+    def __init__(self, settings: dict):
         self.root = tk.Tk()
         self.root.geometry("800x600")
         self.root.title("Youtube mp4/mp3")
@@ -143,7 +143,7 @@ class TkApp:
     
     
     
-    def get_search(self):
+    def get_search(self) -> None:
         self.url = self.search_entry.get()
         self.dl.download_and_save_threads_manager(self.settings,
                                     self.url,
@@ -152,13 +152,13 @@ class TkApp:
                                     )
     
     
-    def start_progressbar(self):
+    def start_progressbar(self) -> None:
         self.progressbar.start(10)
     
-    def stop_progressbar(self):
+    def stop_progressbar(self) -> None:
         self.progressbar.stop()
     
-    def mp3_command(self):
+    def mp3_command(self) -> None:
         if not self.settings["audio_only"]:
             self.settings["audio_only"] = True
             self.mp3_button.config(bg = "#27a300")
@@ -167,7 +167,7 @@ class TkApp:
             
             self.save_new_settings()
     
-    def mp4_command(self):
+    def mp4_command(self) -> None:
         if self.settings["audio_only"]:
             self.settings["audio_only"] = False
             self.mp4_button.config(bg = "#27a300")
@@ -176,7 +176,7 @@ class TkApp:
             
             self.save_new_settings()
     
-    def mp3_or_mp4_check(self):
+    def mp3_or_mp4_check(self) -> None:
         if self.settings["audio_only"]:
             self.mp3_button.config(bg = "#27a300")
             self.mp4_button.config(bg = "red")
@@ -187,24 +187,23 @@ class TkApp:
             self.mp3_button.config(bg = "red")
             self.mp3_or_mp4_label.config(text=".mp4")
     
-    def choice_of_folder(self):
+    def choice_of_folder(self) -> None:
         folder = filedialog.askdirectory()
         self.settings["save_folder"] = folder
-        """print(folder)
-        print(self.settings)"""
         
         self.save_new_settings()
     
-    def open_folder(self):
+    def open_folder(self) -> None:
         filedialog.Directory()
     
-    def change_quality(self,quality):
+    def change_quality(self,quality: str) -> None:
         
         self.save_new_settings()
     
-    def save_new_settings(self):
+    def save_new_settings(self) -> None:
+        pass
         #print("settings has been saved !")
-        self.download_ops = convert_settings_for_yt_dlp_sub(self.settings,self.url)
+        #self.download_ops = convert_settings_for_yt_dlp_sub(self.settings,self.url)
 
 
 if __name__ == "__main__":

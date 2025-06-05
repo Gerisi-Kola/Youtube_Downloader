@@ -1,7 +1,7 @@
 import yt_dlp
 import subprocess
 
-def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
+def get_url_info(url: str) -> dict:
     with yt_dlp.YoutubeDL() as ydl:
         info = ydl.extract_info(url=url,download=False)
         
@@ -12,12 +12,12 @@ def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
         }
         return video_info
 
-def launch_download_python(download_ops,url,stop_progressbar):
+def launch_download_python(download_ops: dict, url: str, stop_progressbar) -> None:
     with yt_dlp.YoutubeDL(download_ops) as ydl:
         ydl.download([url])
     stop_progressbar()
 
-def launch_download_sub(yt,stop_progressbar):
+def launch_download_sub(yt: dict, stop_progressbar) -> None:
     print(yt)
     a = subprocess.run(yt, capture_output=True, text=True, shell=True)
     stop_progressbar()

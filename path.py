@@ -4,7 +4,7 @@ import platform
 import ctypes
 
 
-def open_file_explorer(folder):
+def open_file_explorer(folder: str) -> None:
     folder = get_absolut_path(folder)
     
     if platform.system() == "Windows":
@@ -14,7 +14,7 @@ def open_file_explorer(folder):
     else:  # Linux
         subprocess.Popen(["xdg-open", folder])
 
-def get_absolut_path(path):
+def get_absolut_path(path: str) -> str:
     abs_path = os.path.abspath(path)
     abs_path = abs_path.replace("\\", "/")
     return abs_path

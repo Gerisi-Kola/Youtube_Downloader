@@ -2,7 +2,7 @@ import os
 import datetime
 import json_controler as json
 
-def today_history_get():
+def today_history_get() -> tuple[dict,str]:
     x = datetime.datetime.now()
     print(x.strftime("%x"))
     orignal_date = x.strftime("%x").replace("/","-")
@@ -15,7 +15,6 @@ def today_history_get():
     history_file[3:5] = orignal_date[0:2]
     history_file[6:8] = orignal_date[3:5]
     
-    #history_file[0:2],history_file[3:5] = history_file[3:5], history_file[0:2]
     history_file.insert(0,"20")
     history_file = "".join(history_file)
     history_file = "./history/"+history_file+".log"
@@ -27,7 +26,7 @@ def today_history_get():
         print("file doesn't exist")
         return {}, history_file
 
-def get_current_time():
+def get_current_time() -> str:
     x = datetime.datetime.now()
     time = x.strftime("%X").replace("/","-")
     time = list(time)
@@ -37,12 +36,11 @@ def get_current_time():
     print(time)
     return(time)
 
-def get_history_number(history={}):
+def get_history_number(history: dict = {}) -> int:
     num = len(history) + 1
     return num
 
-def save_history_converter(history={},url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",video_info={'title': 'Rick Astley - Never Gonna Give You Up (Official Music Video)', 'thumbnail': 'https://i.ytimg.com/vi_webp/dQw4w9WgXcQ/maxresdefault.webp'}):
-    #history = today_history_get()
+def save_history_converter(history: dict = {}, url: str ="https://www.youtube.com/watch?v=dQw4w9WgXcQ", video_info: dict = {'title': 'Rick Astley - Never Gonna Give You Up (Official Music Video)', 'thumbnail': 'https://i.ytimg.com/vi_webp/dQw4w9WgXcQ/maxresdefault.webp'}) -> dict:
     time = get_current_time()
     key = get_history_number(history)
     new_history = {
@@ -54,7 +52,7 @@ def save_history_converter(history={},url="https://www.youtube.com/watch?v=dQw4w
     history[f"{key}"] = new_history
     return history
 
-def save_history(history_file,history):
+def save_history(history_file: str, history: dict)  -> None:
     json.save_json(file_name=history_file,data=history)
 
 if __name__ == "__main__":

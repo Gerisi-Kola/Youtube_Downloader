@@ -1,9 +1,7 @@
 import path as p
 
-def convert_settings_for_yt_dlp_python(settings):
-    print(settings)
+def convert_settings_for_yt_dlp_python(settings: dict) -> dict:
     ydl_opts = {}
-    print(ydl_opts)
     quality = settings["video_quality"]
     temp_dir = settings["tmp_folder_absolut"]
     
@@ -32,7 +30,7 @@ def convert_settings_for_yt_dlp_python(settings):
     return ydl_opts
 
 
-def convert_settings_for_yt_dlp_sub(settings,url):
+def convert_settings_for_yt_dlp_sub(settings: dict, url: str) -> dict:
     ydl_opts = ["yt-dlp"]
     audio_only = settings["audio_only"]
     tmp = settings["tmp_folder_absolut"]
@@ -74,6 +72,7 @@ def convert_settings_for_yt_dlp_sub(settings,url):
     # File name output
     #ydl_opts.append(f"-o%(title)s.%(ext)s")
     
+    # file name and location output 
     ydl_opts.append("--output")
     ydl_opts.append(f"{path}/%(title)s.%(ext)s")
     
