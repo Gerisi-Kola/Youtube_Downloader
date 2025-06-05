@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
+import ctypes
 #    ----    ----
 from settings_manager import convert_settings_for_yt_dlp_sub
 import path
@@ -12,6 +13,13 @@ class TkApp:
         self.root.geometry("800x600")
         self.root.title("Youtube mp4/mp3")
         self.root.config(bg = "ivory")
+        title_label = tk.Label(self.root,text="YouTube Downloader", bg="ivory", font="bold 20")
+        title_label.pack(pady=30)
+        
+        # this is the part that sets the icon
+        myappid = 'tkinter.python.test'
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        self.root.iconbitmap(r"./image/ico/YouTubeDownloader.ico") # used raw string to avoid backslash issues
         
         self.url = "" #'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         
@@ -50,14 +58,14 @@ class TkApp:
         
         #   ----    ----    Frame    ----    ----
         self.top_frame = tk.Frame(self.root, bg="ivory")
-        self.top_frame.pack(expand="yes")
+        self.top_frame.pack()
         self.search_frame = tk.Frame(self.top_frame, bg="ivory")
         self.search_frame.pack(expand="yes")
         self.progress_frame = tk.Frame(self.top_frame, bg="ivory")
         self.progress_frame.pack(expand="yes")
         
         self.settings_frame = tk.Frame(self.root, bg="ivory")
-        self.settings_frame.pack(expand="yes")
+        self.settings_frame.pack(side="bottom", pady=20)
         self.mp4_mp3_frame = tk.Frame(self.settings_frame, bg="ivory")
         self.mp4_mp3_frame.pack(side = "left", padx = 50, pady=30)
         
