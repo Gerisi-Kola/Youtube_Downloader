@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-import ctypes
 #    ----    ----
 from settings_manager import convert_settings_for_yt_dlp_sub
 import path
@@ -15,11 +14,8 @@ class TkApp:
         self.root.config(bg = "ivory")
         title_label = tk.Label(self.root,text="YouTube Downloader", bg="ivory", font="bold 20")
         title_label.pack(pady=30)
-        
-        # this is the part that sets the icon
-        myappid = 'tkinter.python.test'
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
-        self.root.iconbitmap(r"./image/ico/YouTubeDownloader.ico") # used raw string to avoid backslash issues
+        path.taskbar_icon()
+        self.root.iconbitmap(r"./image/ico/YouTubeDownloader.ico")
         
         self.url = "" #'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         
@@ -84,8 +80,8 @@ class TkApp:
         self.search_button.pack(side="left")
         
         self.progressbar = ttk.Progressbar( self.progress_frame,
-                                            #mode='indeterminate',
-                                            length=420,
+                                            mode='indeterminate',
+                                            length=210,
                                             orient="horizontal",
                                             style="My.Horizontal.TProgressbar"
                                             )
@@ -142,10 +138,10 @@ class TkApp:
         self.quality_option_menu.pack(side="right")
         
         
-        self.url = self.search_entry.get()
-        self.download_ops = convert_settings_for_yt_dlp_sub(self.settings,self.url)
         
         self.root.mainloop()
+    
+    
     
     def get_search(self):
         self.url = self.search_entry.get()
@@ -157,7 +153,7 @@ class TkApp:
     
     
     def start_progressbar(self):
-        self.progressbar.start()
+        self.progressbar.start(10)
     
     def stop_progressbar(self):
         self.progressbar.stop()

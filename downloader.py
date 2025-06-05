@@ -1,34 +1,7 @@
 import yt_dlp
 import subprocess
 
-def fini():
-    print("fini !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-def launch_download(yt,stop_progressbar):
-    """ launch the download and if it has a error, launch the second type of download"""
-    try:
-        return launch_download_sub(yt,stop_progressbar)
-    except:
-        try:
-            raise
-            #launch_download_python(download_ops,url)
-        except Exception as e:
-            print(f"Error : {e}")
-
 def get_url_info(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
-    try:
-        return get_url_info_python(url)
-    except Exception as e:
-        print(f"Error : {e}")
-
-def launch_download_python(download_ops,url):
-    with yt_dlp.YoutubeDL(download_ops) as ydl:
-        ydl.download([url])
-        
-        fini()
-
-
-def get_url_info_python(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
     with yt_dlp.YoutubeDL() as ydl:
         info = ydl.extract_info(url=url,download=False)
         
@@ -37,19 +10,19 @@ def get_url_info_python(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"):
             "title" : info.get("title"),
             "thumbnail" : info.get("thumbnail")
         }
-        fini()
         return video_info
 
-#"https://www.youtube.com/watch?v=2zjwbTaiwNQ"
+def launch_download_python(download_ops,url,stop_progressbar):
+    with yt_dlp.YoutubeDL(download_ops) as ydl:
+        ydl.download([url])
+    stop_progressbar()
 
 def launch_download_sub(yt,stop_progressbar):
-    try:
-        print(yt)
-        a = subprocess.run(yt, capture_output=True, text=True, shell=True)
-        stop_progressbar()
-        return a
-    except Exception as e:
-        print(e)
+    print(yt)
+    a = subprocess.run(yt, capture_output=True, text=True, shell=True)
+    stop_progressbar()
+    return a
+
 
 if __name__ == "__main__":
     """def my_hook(d):

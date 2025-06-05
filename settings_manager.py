@@ -1,23 +1,22 @@
-import yt_dlp
 import path as p
 
-def convert_settings_for_yt_dlp(settings):
+def convert_settings_for_yt_dlp_python(settings):
     print(settings)
     ydl_opts = {}
     print(ydl_opts)
     quality = settings["video_quality"]
     temp_dir = settings["tmp_folder_absolut"]
     
+    # Tous les fichiers temporaires seront ici
+    ydl_opts['paths'] = {'home' : settings["save_folder"], 'temp': temp_dir}
+    
     # -------    mp3 or mp4     -------
-    ydl_opts['paths'] = {'home' : settings["save_folder"], 'temp': temp_dir}  # Tous les fichiers temporaires seront ici
     if settings["audio_only"]:
         ydl_opts['postprocessors'] = [{
                         'key': 'FFmpegExtractAudio',
                         'preferredcodec': 'mp3',
-                        #'preferredquality': '192'
+                        'preferredquality': '192'
                         }]
-        
-        #ydl_opts['merge_output_format'] = 'mp4' 
     else:
         ydl_opts['merge_output_format'] = 'mp4'
     
@@ -30,9 +29,6 @@ def convert_settings_for_yt_dlp(settings):
     else :
         ydl_opts['format'] =  f'bestvideo[height<={quality}]+bestaudio/best[height<={quality}]'
     
-    
-    
-    #print(ydl_opts)
     return ydl_opts
 
 
@@ -66,7 +62,6 @@ def convert_settings_for_yt_dlp_sub(settings,url):
             q = "137"
         else:
             q = "22" #best ?
-        
         ydl_opts.append(f"-f {q}")
     
     # URL
@@ -76,15 +71,11 @@ def convert_settings_for_yt_dlp_sub(settings,url):
     ydl_opts.append(f"-P")
     ydl_opts.append(f"{tmp}")
     
-    if settings["audio_only"] == True:
-        title = f"-o%(title)s.mp3"
-        ydl_opts.append(f"-o%(title)s.%(ext)s")
-    else:
-        ydl_opts.append(f"-o%(title)s.%(ext)s")
-        title = f"-o%(title)s.mp4"
+    # File name output
+    #ydl_opts.append(f"-o%(title)s.%(ext)s")
     
     ydl_opts.append("--output")
-    ydl_opts.append(f"{path}/%(title)s.mp4")
+    ydl_opts.append(f"{path}/%(title)s.%(ext)s")
     
     return ydl_opts
 
@@ -99,7 +90,6 @@ if __name__ == "__main__":
     settings = settings["current_settings"]
     
     ydl_opts,title,path = convert_settings_for_yt_dlp_sub(settings, "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-    #print(ydl_opts)
     d.launch_download_sub(ydl_opts)
     
     """ydl_opts = {
