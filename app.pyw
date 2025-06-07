@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-import json_controler as json
 #    ----    ----
 import path
 import download_manager
+import json_controler as json
 
 class TkApp:
     def __init__(self, settings: dict):
@@ -24,8 +24,11 @@ class TkApp:
         self.root.configure(background = self.colors["bg"])
         title_label = tk.Label(self.root,text="YouTube Downloader", bg=self.colors["bg"], font="bold 20")
         title_label.pack(pady=30)
-        path.taskbar_icon()
-        self.root.iconbitmap(r"./image/ico/YouTubeDownloader.ico")
+        try:
+            path.taskbar_icon()
+            self.root.iconbitmap(r"./image/ico/YouTubeDownloader.ico")
+        except Exception as e:
+            print(f"Can not load ico : {e}")
         
         self.url = "" #'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         self.error_progressbar = False
@@ -53,8 +56,8 @@ class TkApp:
                             font="bold 15",
                             )
         self.style.configure("Horizontal.TProgressbar",
-                            background = self.progressbar_color["background"],   # Vert doux (barre)
-                            troughcolor = self.progressbar_color["troughcolor"],  # Beige clair (fond)
+                            background = self.progressbar_color["background"],   # Barre
+                            troughcolor = self.progressbar_color["troughcolor"],  # Fond
                             bordercolor = self.progressbar_color["bordercolor"],  # Bordure légère
                             lightcolor = self.progressbar_color["lightcolor"],   # Lumière
                             darkcolor = self.progressbar_color["darkcolor"],    # Ombre verte
@@ -112,7 +115,6 @@ class TkApp:
         self.mp3_or_mp4_label.pack(side="top")
         self.mp3_button = ttk.Button(self.mp4_mp3_frame,
                                     text = "mp3",
-                                    #font="bold 15",
                                     command=self.mp3_command,
                                     style="MP3.TButton",
                                     takefocus=False
@@ -120,7 +122,6 @@ class TkApp:
         self.mp3_button.pack(side="left")
         self.mp4_button = ttk.Button(self.mp4_mp3_frame,
                                     text = "mp4",
-                                    #font="bold 15",
                                     command=self.mp4_command,
                                     style="MP4.TButton",
                                     takefocus=False
@@ -259,7 +260,6 @@ class TkApp:
                 "default" : self.colors
             }
         }
-        #print(settings)
         
         json.save_json("settings.json", full_settings)
 
