@@ -1,19 +1,54 @@
 {
-    "current_settings" : {
-        "audio_only" : "true",
-        "tmp_folder" : "./tmp",
-        "tmp_folder_absolut" : "./tmp",
-        "save_folder" : "D:/Programation/Python/Youtube_Download/videos",
-        "video_quality" : "360",
-        "all_video_quality" : [
+    "current_settings": {
+        "audio_only": true,
+        "tmp_folder": "./tmp",
+        "tmp_folder_absolut": "D:/Programation/Python/Youtube_Download/tmp",
+        "save_folder": "",
+        "video_quality": "360",
+        "all_video_quality": [
             "144",
             "360",
             "480",
             "720",
             "1080",
             "best"
-            ]
+        ]
     },
-    
-    "original_settings" : {}
+    "original_settings": {
+        "audio_only": true,
+        "tmp_folder": "./tmp",
+        "tmp_folder_absolut": "./tmp",
+        "save_folder": "./videos",
+        "video_quality": "1080",
+        "all_video_quality": [
+            "144",
+            "360",
+            "480",
+            "720",
+            "1080",
+            "best"
+        ]
+    },
+    "colors": {
+        "default": {
+            "bg": "ivory",
+            "button_red": "#F95959",
+            "button_green": "#D3E785",
+            "button_colors": {
+                "background": "#FFFFF0",
+                "troughcolor": "#E6E6E6",
+                "bordercolor": "#C0C0B0",
+                "lightcolor": "#FFFFFF",
+                "darkcolor": "#B0A890"
+            },
+            "progressbar": {
+                "background_error": "red",
+                "background": "#88B04B",
+                "troughcolor": "#F5F5DC",
+                "bordercolor": "#D8CAB8",
+                "lightcolor": "#FFFFFF",
+                "darkcolor": "#6B8E23"
+            }
+        }
+    }
 }

@@ -1,18 +1,29 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
+import json_controler as json
 #    ----    ----
-from settings_manager import convert_settings_for_yt_dlp_sub
 import path
 import download_manager
 
 class TkApp:
     def __init__(self, settings: dict):
+        
+        #   ----    ----    Settings   ----    ----
+        self.settings = settings["current_settings"]
+        self.original_settings = settings["original_settings"]
+        self.colors = settings["colors"]["default"]
+        self.bnt_color = self.colors["button_colors"]
+        self.progressbar_color = self.colors["progressbar"]
+        self.settings["tmp_folder_absolut"] = \
+                    path.get_absolut_path(self.settings["tmp_folder"])
+        
+        #   ----    ----    Window creation   ----    ----
         self.root = tk.Tk()
         self.root.geometry("800x600")
         self.root.title("Youtube mp4/mp3")
-        self.root.config(bg = "ivory")
-        title_label = tk.Label(self.root,text="YouTube Downloader", bg="ivory", font="bold 20")
+        self.root.configure(background = self.colors["bg"])
+        title_label = tk.Label(self.root,text="YouTube Downloader", bg=self.colors["bg"], font="bold 20")
         title_label.pack(pady=30)
         path.taskbar_icon()
         self.root.iconbitmap(r"./image/ico/YouTubeDownloader.ico")
@@ -21,18 +32,16 @@ class TkApp:
         
         self.dl = download_manager.DowloadManager()
         
-        self.settings = settings["current_settings"]
-        self.original_settings = settings["original_settings"]
-        self.settings["tmp_folder_absolut"] = \
-                    path.get_absolut_path(self.settings["tmp_folder"])
-        
-        
-        
+        #   ----    ----  Style   ----    ----
         self.style = ttk.Style()
-        self.style.theme_use()
+        self.style.theme_use("clam")
         self.style.configure("TButton",
                             padding=11,
-                            background="ivory"
+                            background=self.bnt_color["background"],
+                            troughcolor=self.bnt_color["troughcolor"],
+                            bordercolor=self.bnt_color["bordercolor"],
+                            lightcolor=self.bnt_color["lightcolor"],
+                            darkcolor=self.bnt_color["darkcolor"]
                             )
         self.style.configure("TEntry",
                             padding=8,
@@ -42,27 +51,37 @@ class TkApp:
                             background = "white",
                             padding=13,
                             width = 6,
-                            font="bold 15"
+                            font="bold 15",
                             )
-        self.style.configure("My.Horizontal.TProgressbar",
-                            background="lightblue",
-                            troughcolor="lightgray",
-                            bordercolor="darkblue",
-                            lightcolor="lightblue",
-                            darkcolor="darkblue"
+        self.style.configure("Horizontal.TProgressbar",
+                            background = self.progressbar_color["background"],   # Vert doux (barre)
+                            troughcolor = self.progressbar_color["troughcolor"],  # Beige clair (fond)
+                            bordercolor = self.progressbar_color["bordercolor"],  # Bordure légère
+                            lightcolor = self.progressbar_color["lightcolor"],   # Lumière
+                            darkcolor = self.progressbar_color["darkcolor"],    # Ombre verte
+                            )
+        self.style.configure("TFrame",
+                            background=self.colors["bg"],
+                            )
+        self.style.configure("TLabel",
+                            background=self.colors["bg"]
+                            )
+        self.style.configure("MP3.TButton",
+                            )
+        self.style.configure("MP4.TButton",
                             )
         
         #   ----    ----    Frame    ----    ----
-        self.top_frame = tk.Frame(self.root, bg="ivory")
+        self.top_frame = ttk.Frame(self.root)
         self.top_frame.pack()
-        self.search_frame = tk.Frame(self.top_frame, bg="ivory")
+        self.search_frame = ttk.Frame(self.top_frame)
         self.search_frame.pack(expand="yes")
-        self.progress_frame = tk.Frame(self.top_frame, bg="ivory")
+        self.progress_frame = ttk.Frame(self.top_frame)
         self.progress_frame.pack(expand="yes")
         
-        self.settings_frame = tk.Frame(self.root, bg="ivory")
+        self.settings_frame = ttk.Frame(self.root)
         self.settings_frame.pack(side="bottom", pady=20)
-        self.mp4_mp3_frame = tk.Frame(self.settings_frame, bg="ivory")
+        self.mp4_mp3_frame = ttk.Frame(self.settings_frame)
         self.mp4_mp3_frame.pack(side = "left", padx = 50, pady=30)
         
         #   ----    ----    Search    ----    ----
@@ -81,28 +100,31 @@ class TkApp:
         
         self.progressbar = ttk.Progressbar( self.progress_frame,
                                             mode='indeterminate',
-                                            length=210,
+                                            length=420,
                                             orient="horizontal",
-                                            style="My.Horizontal.TProgressbar"
+                                            style="Horizontal.TProgressbar"
                                             )
         self.progressbar.pack(side="top", pady=20)
         
         #   ----    ----    mp3 or mp4    ----    ----
-        self.mp3_or_mp4_label = tk.Label(self.mp4_mp3_frame,
+        self.mp3_or_mp4_label = ttk.Label(self.mp4_mp3_frame,
                                         font="bold 18",
-                                        bg="ivory"
                                         )
         self.mp3_or_mp4_label.pack(side="top")
-        self.mp3_button = tk.Button(self.mp4_mp3_frame,
+        self.mp3_button = ttk.Button(self.mp4_mp3_frame,
                                     text = "mp3",
-                                    font="bold 15",
-                                    command=self.mp3_command
+                                    #font="bold 15",
+                                    command=self.mp3_command,
+                                    style="MP3.TButton",
+                                    takefocus=False
                                     )
         self.mp3_button.pack(side="left")
-        self.mp4_button = tk.Button(self.mp4_mp3_frame,
+        self.mp4_button = ttk.Button(self.mp4_mp3_frame,
                                     text = "mp4",
-                                    font="bold 15",
-                                    command=self.mp4_command
+                                    #font="bold 15",
+                                    command=self.mp4_command,
+                                    style="MP4.TButton",
+                                    takefocus=False
                                     )
         self.mp4_button.pack()
         self.mp3_or_mp4_check()
@@ -161,8 +183,12 @@ class TkApp:
     def mp3_command(self) -> None:
         if not self.settings["audio_only"]:
             self.settings["audio_only"] = True
-            self.mp3_button.config(bg = "#27a300")
-            self.mp4_button.config(bg = "red")
+            self.style.configure("MP3.TButton",
+                            background = self.colors["button_green"]
+                            )
+            self.style.configure("MP4.TButton",
+                            background = self.colors["button_red"]
+                            )
             self.mp3_or_mp4_label.config(text=".mp3")
             
             self.save_new_settings()
@@ -170,21 +196,34 @@ class TkApp:
     def mp4_command(self) -> None:
         if self.settings["audio_only"]:
             self.settings["audio_only"] = False
-            self.mp4_button.config(bg = "#27a300")
-            self.mp3_button.config(bg = "red")
+            self.style.configure("MP4.TButton",
+                            background = self.colors["button_green"]
+                            )
+            self.style.configure("MP3.TButton",
+                            background = self.colors["button_red"]
+                            )
             self.mp3_or_mp4_label.config(text=".mp4")
             
             self.save_new_settings()
     
     def mp3_or_mp4_check(self) -> None:
         if self.settings["audio_only"]:
-            self.mp3_button.config(bg = "#27a300")
-            self.mp4_button.config(bg = "red")
+            self.style.configure("MP3.TButton",
+                            background = self.colors["button_green"]
+                            )
+            self.style.configure
+            self.style.configure("MP4.TButton",
+                            background = self.colors["button_red"]
+                            )
             self.mp3_or_mp4_label.config(text=".mp3")
         
         elif not self.settings["audio_only"]:
-            self.mp4_button.config(bg = "#27a300")
-            self.mp3_button.config(bg = "red")
+            self.style.configure("MP4.TButton",
+                            background = self.colors["button_green"]
+                            )
+            self.style.configure("MP3.TButton",
+                            background = self.colors["button_red"]
+                            )
             self.mp3_or_mp4_label.config(text=".mp4")
     
     def choice_of_folder(self) -> None:
@@ -201,12 +240,17 @@ class TkApp:
         self.save_new_settings()
     
     def save_new_settings(self) -> None:
-        pass
-        #print("settings has been saved !")
-        #self.download_ops = convert_settings_for_yt_dlp_sub(self.settings,self.url)
+        full_settings = {
+            "current_settings" : self.settings,
+            "original_settings": self.original_settings,
+            "colors"           : {
+                "default" : self.colors
+            }
+        }
+        
+        json.save_json("settings.json", full_settings)
 
 
 if __name__ == "__main__":
-    from json_controler import get_json
-    settings = get_json("settings.json")
+    settings = json.get_json("settings.json")
     win = TkApp(settings=settings)
