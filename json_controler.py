@@ -1,6 +1,7 @@
 import json
 
 def get_json(file_name: str) -> dict :
+    """ Retrieves data from a json file """
     file_name = file_name.replace("\\","/")
     file = open(file_name,"r")
     data = json.load(file)
@@ -8,6 +9,7 @@ def get_json(file_name: str) -> dict :
     return data
 
 def save_json(file_name: str, data: dict) -> None:
+    """ Save data in a json file """
     file_name = file_name.replace("\\","/")
     file = open(file_name,"w")
     json.dump(data,file, indent = 4)
@@ -20,19 +22,22 @@ def save_bin(file_name: str, data: dict) -> None:
     file.close()
 
 def save_file(file_name: str, data: dict) -> None:
+    """ Save data in a json file """
     file_name = file_name.replace("\\","/")
     file = open(file_name,"w")
     file.write(data)
     file.close()
 
-def read_file(file_name: str) -> dict:
+def read_file(file_name: str) -> str:
+    """ Retrieves the content of a file """
     file_name = file_name.replace("\\","/")
     file = open(file_name,"r")
     data = file.read()
     file.close()
     return data
 
-def get_list_of_lines(file_name: str) -> list:
+def get_list_of_lines(file_name: str) -> list[str]:
+    """ Retrieves the content of a file and split it in all lines """
     file_name = file_name.replace("\\","/")
     file = read_file(file_name)
     file = file.split("\n")
