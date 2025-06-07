@@ -33,7 +33,7 @@ class DowloadManager:
             self.history_manager(url,info_video)
         except Exception as e:
             print("Error total download : ",e)
-            stop_progressbar()
+            stop_progressbar(True)
     
     def download_and_save_threads_manager(self,settings: dict, url: str, start_progressbar, stop_progressbar) -> None:
         try :

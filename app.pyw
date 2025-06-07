@@ -29,7 +29,7 @@ class TkApp:
         self.root.iconbitmap(r"./image/ico/YouTubeDownloader.ico")
         
         self.url = "" #'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        
+        self.error_progressbar = False
         self.dl = download_manager.DowloadManager()
         
         #   ----    ----  Style   ----    ----
@@ -176,9 +176,29 @@ class TkApp:
     
     def start_progressbar(self) -> None:
         self.progressbar.start(10)
+        if self.error_progressbar:
+            self.error_progressbar = False
+            self.style.configure(
+                        "Horizontal.TProgressbar",
+                        background = self.progressbar_color["background"],   # Vert doux (barre)
+                        troughcolor = self.progressbar_color["troughcolor"],  # Beige clair (fond)
+                        bordercolor = self.progressbar_color["bordercolor"],  # Bordure légère
+                        lightcolor = self.progressbar_color["lightcolor"],   # Lumière
+                        darkcolor = self.progressbar_color["darkcolor"],    # Ombre verte
+                        )
     
-    def stop_progressbar(self) -> None:
+    def stop_progressbar(self, error=False) -> None:
         self.progressbar.stop()
+        if error:
+            self.error_progressbar = True
+            self.style.configure(
+                        "Horizontal.TProgressbar",
+                        background = self.progressbar_color["background_error"],   # Vert doux (barre)
+                        troughcolor = self.progressbar_color["troughcolor"],  # Beige clair (fond)
+                        bordercolor = self.progressbar_color["bordercolor"],  # Bordure légère
+                        lightcolor = self.progressbar_color["lightcolor"],   # Lumière
+                        darkcolor = self.progressbar_color["darkcolor"],    # Ombre verte
+                        )
     
     def mp3_command(self) -> None:
         if not self.settings["audio_only"]:
