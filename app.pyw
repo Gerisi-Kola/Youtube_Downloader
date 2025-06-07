@@ -15,8 +15,7 @@ class TkApp:
         self.colors = settings["colors"]["default"]
         self.bnt_color = self.colors["button_colors"]
         self.progressbar_color = self.colors["progressbar"]
-        self.settings["tmp_folder_absolut"] = \
-                    path.get_absolut_path(self.settings["tmp_folder"])
+        self.settings["tmp_folder_absolut"] = path.get_absolut_path(self.settings["tmp_folder"])
         
         #   ----    ----    Window creation   ----    ----
         self.root = tk.Tk()
@@ -153,9 +152,9 @@ class TkApp:
         self.quality_option_menu = ttk.OptionMenu(
                                         self.settings_frame,
                                         self.option_var,
-                                        #self.settings["video_quality"],
+                                        self.settings["video_quality"],
                                         *self.settings["all_video_quality"],
-                                        #command=self.option_changed
+                                        command=self.change_quality
                                         )
         self.quality_option_menu.pack(side="right")
         
@@ -180,11 +179,7 @@ class TkApp:
             self.error_progressbar = False
             self.style.configure(
                         "Horizontal.TProgressbar",
-                        background = self.progressbar_color["background"],   # Vert doux (barre)
-                        troughcolor = self.progressbar_color["troughcolor"],  # Beige clair (fond)
-                        bordercolor = self.progressbar_color["bordercolor"],  # Bordure légère
-                        lightcolor = self.progressbar_color["lightcolor"],   # Lumière
-                        darkcolor = self.progressbar_color["darkcolor"],    # Ombre verte
+                        background = self.progressbar_color["background"],
                         )
     
     def stop_progressbar(self, error=False) -> None:
@@ -193,11 +188,7 @@ class TkApp:
             self.error_progressbar = True
             self.style.configure(
                         "Horizontal.TProgressbar",
-                        background = self.progressbar_color["background_error"],   # Vert doux (barre)
-                        troughcolor = self.progressbar_color["troughcolor"],  # Beige clair (fond)
-                        bordercolor = self.progressbar_color["bordercolor"],  # Bordure légère
-                        lightcolor = self.progressbar_color["lightcolor"],   # Lumière
-                        darkcolor = self.progressbar_color["darkcolor"],    # Ombre verte
+                        background = self.progressbar_color["background_error"],
                         )
     
     def mp3_command(self) -> None:
@@ -256,7 +247,8 @@ class TkApp:
         filedialog.Directory()
     
     def change_quality(self,quality: str) -> None:
-        
+        print(f"quality changed to {quality}")
+        self.settings["video_quality"] = quality
         self.save_new_settings()
     
     def save_new_settings(self) -> None:
@@ -267,6 +259,7 @@ class TkApp:
                 "default" : self.colors
             }
         }
+        #print(settings)
         
         json.save_json("settings.json", full_settings)
 
