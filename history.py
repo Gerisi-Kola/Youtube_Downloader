@@ -1,11 +1,13 @@
 import os
 import datetime
+#    ----    ----
 import json_controler as json
+import path
 
-def today_history_get() -> tuple[dict,str]:
+def today_history_get(prefix: str ="") -> tuple[dict,str]:
     x = datetime.datetime.now()
     print(x.strftime("%x"))
-    orignal_date = x.strftime("%x").replace("/","-")
+    orignal_date = x.strftime("%x").replace("/","_")
     print(orignal_date)
     
     orignal_date = list(orignal_date)
@@ -17,10 +19,16 @@ def today_history_get() -> tuple[dict,str]:
     
     history_file.insert(0,"20")
     history_file = "".join(history_file)
-    history_file = "./history/"+history_file+".log"
+    
+    hystory_folder = path.get_absolut_path("./history").replace("\\","/")
+    
+    history_file = f"{hystory_folder}/{prefix}{history_file}.log"
     print(history_file)
     
     if os.path.exists(history_file):
+        print("file exist")
+        
+        print(f"{history_file=}\n\n{type(history_file)=}")
         return json.get_json(history_file), history_file
     else:
         print("file doesn't exist")
@@ -40,7 +48,7 @@ def get_history_number(history: dict = {}) -> int:
     num = len(history) + 1
     return num
 
-def save_history_converter(history: dict = {}, url: str ="https://www.youtube.com/watch?v=dQw4w9WgXcQ", video_info: dict = {'title': 'Rick Astley - Never Gonna Give You Up (Official Music Video)', 'thumbnail': 'https://i.ytimg.com/vi_webp/dQw4w9WgXcQ/maxresdefault.webp'}) -> dict:
+def save_history_converter(history: dict, url: str, video_info: dict) -> dict:
     time = get_current_time()
     key = get_history_number(history)
     new_history = {
@@ -52,8 +60,15 @@ def save_history_converter(history: dict = {}, url: str ="https://www.youtube.co
     history[f"{key}"] = new_history
     return history
 
+def save_error_history(history: dict, url: str, error) -> dict:
+    key = get_history_number(history)
+    history[f"{key}"] = error
+    return history
+
+
 def save_history(history_file: str, history: dict)  -> None:
-    json.save_json(file_name=history_file,data=history)
+    print(f"{history_file=}")
+    json.save_json(history_file,history)
 
 if __name__ == "__main__":
     #import downloader as dl

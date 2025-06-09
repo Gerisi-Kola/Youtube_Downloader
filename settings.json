@@ -3,7 +3,7 @@
         "audio_only": true,
         "tmp_folder": "./tmp",
         "tmp_folder_absolut": "D:/Programation/Python/Youtube_Download/tmp",
-        "save_folder": "",
+        "save_folder": "./videos",
         "video_quality": "360",
         "all_video_quality": [
             "144",
