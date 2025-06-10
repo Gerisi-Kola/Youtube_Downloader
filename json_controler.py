@@ -83,23 +83,5 @@ def get_list_of_lines(file_path: str) -> list[str]:
     return file
 
 if __name__ == "__main__":
-    """a = get_json("settings.json")
-    print(a)"""
-    
-    """c = read_file(r"D:\Programation\Python\Youtube_Download\history\05-25-25.log")
-    print(c)
-    c = c.split("\n")
-    print(type(c))
-    print(c)"""
-    
-    """
-    b = {
-        "a":1,
-        "b":2,
-        "c":3
-    }
-    b = "Hello World"
-    save_bin("./working_progress/file.log",b"https://i.ytimg.com/vi_webp/dQw4w9WgXcQ/maxresdefault.webp")
-    """
-    #print(get_json("D:/Programation/Python/Youtube_Download/history/Error_2025_06_09.log"))
-    save_file(r"./tmp/test.txt","test")
+    #save_file(r"./tmp/test.txt","test")
+    print(type(read_file(r"./settings.json")))

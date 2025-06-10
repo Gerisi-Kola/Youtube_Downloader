@@ -16,11 +16,11 @@
 - il y a un problème avec les fichier log
 - il faut crée un 2e log qui sauvegarde les erreurs
 - faut isoler les erreur possible pour que ca crache pas
-- il faut un bon indicateur
+- il faut un bon indicateur pour savoir si ca a réussi ou raté
 - il faut que les mp3 aient une images (thumbnail)
 - il faut un fichier avec les dépendances
 - il faut pouvoir voir les codecs video et audio
 - il faut pouvoir mettre des informations des les métadonnées
 - il faut pouvoir télécharger des sous-titres
 - il faut mettre un clic droit
-- si je ferme mon programme a la va-vite, je peux finir avec des log incorrecte que je ne peux pas lire derrière
+        -  si je ferme mon programme a la va-vite, je peux finir avec des log incorrecte que je ne peux pas lire derrière
