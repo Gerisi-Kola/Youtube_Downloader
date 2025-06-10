@@ -20,7 +20,7 @@ def save_json(file_path: str, data: dict) -> None:
     tmp_path = file_path+".tmp"
     
     with open(tmp_path, "w", encoding="utf-8") as file:
-        json.dump(data, file, indent=10,ensure_ascii=False)
+        json.dump(data, file, indent=4,ensure_ascii=False)
         file.flush()               # Vider le buffer Python
         os.fsync(file.fileno())    # Vider le buffer OS (très important)
     
@@ -28,19 +28,44 @@ def save_json(file_path: str, data: dict) -> None:
     """if os.path.exists(tmp_path):
         os.remove(tmp_path)"""
 
+def save_file(file_path: str, data: str) -> None:
+    """ Save data in a file """
+    file_path = file_path.replace("\\","/")
+    tmp_path = file_path+".tmp"
+    
+    with open(tmp_path, "w", encoding="utf-8") as file:
+        file.write(data)
+        file.flush()               # Vider le buffer Python
+        os.fsync(file.fileno())    # Vider le buffer OS (très important)
+    
+    os.replace(tmp_path, file_path)  # Remplace de façon atomique (sûre)
 
-def save_bin(file_path: str, data: dict) -> None:
+
+
+"""
+Faut utiliser pickle
+
+def save_bin(file_path: str, data: ) -> None:
+    "" Save data in a file ""
+    file_path = file_path.replace("\\","/")
+    tmp_path = file_path+".tmp"
+    
+    with open(tmp_path, "wb") as file:
+        file.write(data)
+        file.flush()               # Vider le buffer Python
+        os.fsync(file.fileno())    # Vider le buffer OS (très important)
+    
+    os.replace(tmp_path, file_path)  # Remplace de façon atomique (sûre)
+"""
+
+"""
+Faut utiliser pickle
+def save_bin(file_path: str, data: ) -> None:
     file_path = file_path.replace("\\","/")
     file = open(file_path,"wb")
     file.write(data)
     file.close()
-
-def save_file(file_path: str, data: dict) -> None:
-    """ Save data in a json file """
-    file_path = file_path.replace("\\","/")
-    file = open(file_path,"w")
-    file.write(data)
-    file.close()
+"""
 
 def read_file(file_path: str) -> str:
     """ Retrieves the content of a file """
@@ -76,4 +101,5 @@ if __name__ == "__main__":
     b = "Hello World"
     save_bin("./working_progress/file.log",b"https://i.ytimg.com/vi_webp/dQw4w9WgXcQ/maxresdefault.webp")
     """
-    print(get_json("D:/Programation/Python/Youtube_Download/history/Error_2025_06_09.log"))
+    #print(get_json("D:/Programation/Python/Youtube_Download/history/Error_2025_06_09.log"))
+    save_file(r"./tmp/test.txt","test")
