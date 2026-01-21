@@ -78,10 +78,12 @@ def read_file(file_path: str) -> str:
 def get_list_of_lines(file_path: str) -> list[str]:
     """ Retrieves the content of a file and split it in all lines """
     file_path = file_path.replace("\\","/")
-    file = read_file(file_path)
-    file = file.split("\n")
-    return file
+    with open(file_path, "r", encoding="utf-16") as file:
+        lignes = [line.strip() for line in file]
+    return lignes
 
 if __name__ == "__main__":
     #save_file(r"./tmp/test.txt","test")
-    print(type(read_file(r"./settings.json")))
+    l = get_list_of_lines(r"./videos/formats.txt")
+    #for i in l:
+    print(str(l[20]).split(" "))

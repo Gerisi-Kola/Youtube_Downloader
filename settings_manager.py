@@ -13,19 +13,33 @@ def convert_settings_for_yt_dlp_python(settings: dict) -> dict:
         ydl_opts['postprocessors'] = [{
                         'key': 'FFmpegExtractAudio',
                         'preferredcodec': 'mp3',
-                        'preferredquality': '192'
+                        'preferredquality': '320'
                         }]
     else:
         ydl_opts['merge_output_format'] = 'mp4'
+        
+        if quality == "best":
+            ydl_opts['format'] = (
+                "bv*[vcodec^=avc1]+ba[acodec^=mp4a]/"
+                #"bestvideo+bestaudio/best"
+            )
+        else:
+            print("aaaaaaaaaaaaavvvvvvvvvvvvvvvvvvvcccccccccccccccc")
+            ydl_opts['format'] = (
+                f"bv*[vcodec^=avc1][height<={quality}]+ba[acodec^=mp4a]/"
+                f"bv*[vcodec^=vp09][height<={quality}]+ba[acodec^=mp4a]/"
+                f"bestvideo[height<={quality}]+bestaudio/"
+                f"best[height<={quality}]"
+            )
     
     # -------    Folder     -------
     ydl_opts['outtmpl']= f"%(title)s.%(ext)s"
     
-    # -------    Video quality     -------
+    """# -------    Video quality     -------
     if quality == "best":
         ydl_opts['format'] = "best"
     else :
-        ydl_opts['format'] =  f'bestvideo[height<={quality}]+bestaudio/best[height<={quality}]'
+        ydl_opts['format'] =  f'bestvideo[height<={quality}]+bestaudio/best[height<={quality}]'"""
     
     return ydl_opts
 

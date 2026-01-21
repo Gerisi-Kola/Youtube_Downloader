@@ -20,9 +20,9 @@ def today_history_get(prefix: str ="") -> tuple[dict,str]:
     history_file.insert(0,"20")
     history_file = "".join(history_file)
     
-    hystory_folder = path.get_absolut_path("./history").replace("\\","/")
+    history_folder = path.get_absolut_path("./history").replace("\\","/")
     
-    history_file = f"{hystory_folder}/{prefix}{history_file}.log"
+    history_file = f"{history_folder}/{prefix}{history_file}.log"
     print(history_file)
     
     if os.path.exists(history_file):
@@ -73,8 +73,8 @@ def save_history(history_file: str, history: dict)  -> None:
 if __name__ == "__main__":
     #import downloader as dl
     #info,video = dl.get_url_info()
-    today_history_get()
+    #today_history_get()
     #get_current_time()
     #save_history_converter()
     #print(get_history_number())
-    
+    pass
