@@ -1,7 +1,7 @@
 import os
 import datetime
 #    ----    ----
-import json_controler as json
+import files_controller as File
 import path
 
 def today_history_get(prefix: str ="") -> tuple[dict,str]:
@@ -29,7 +29,7 @@ def today_history_get(prefix: str ="") -> tuple[dict,str]:
         print("file exist")
         
         print(f"{history_file=}\n\n{type(history_file)=}")
-        return json.get_json(history_file), history_file
+        return File.get_json(history_file), history_file
     else:
         print("file doesn't exist")
         return {}, history_file
@@ -68,7 +68,7 @@ def save_error_history(history: dict, url: str, error) -> dict:
 
 def save_history(history_file: str, history: dict)  -> None:
     print(f"{history_file=}")
-    json.save_json(history_file,history)
+    File.save_json(history_file,history)
 
 if __name__ == "__main__":
     #import downloader as dl

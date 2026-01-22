@@ -36,10 +36,12 @@ class DowloadManager:
             
             #   ----    ----    Download   ----    ----
             try:
+                raise
                 download_ops_python = set.convert_settings_for_yt_dlp_python(settings)
                 dl.launch_download_python(download_ops_python, url, stop_progressbar)
             except Exception as e:
-                error_yt_dlp_python = e
+                print("\n\nsubprocess\n\n")
+                #error_yt_dlp_python = e
                 download_ops_subprocess = set.convert_settings_for_yt_dlp_sub(settings, url)
                 dl.launch_download_sub(download_ops_subprocess, stop_progressbar)
             

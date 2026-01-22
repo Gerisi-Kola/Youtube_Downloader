@@ -2,8 +2,13 @@ import yt_dlp
 import subprocess
 
 def get_url_info(url: str) -> dict:
+    """ Use yt-dlp embed to get the thumbnail and the title and return a dict of them
+        {
+        'title'     = str(...)
+        'thumbnail' = ???
+        }"""
     with yt_dlp.YoutubeDL() as ydl:
-        info = ydl.extract_info(url=url,download=False)
+        info = ydl.extract_info(url=url,download=False) # why it start download ?
         
         print(info.get("thumbnail"))
         video_info = {
@@ -13,15 +18,19 @@ def get_url_info(url: str) -> dict:
         return video_info
 
 def launch_download_python(download_ops: dict, url: str, stop_progressbar) -> None:
+    """ Download using python embed"""
     with yt_dlp.YoutubeDL(download_ops) as ydl:
         ydl.download([url])
     stop_progressbar()
 
 def launch_download_sub(yt: dict, stop_progressbar) -> None:
+    """ Download using subprocess and yt-dlp"""
     print(yt)
-    a = subprocess.run(yt, capture_output=True, text=True, shell=True)
+    result = subprocess.run(yt, capture_output=True, text=True, shell=True)
+    print(result.stdout) # print est récupérer et envoyer dans la text box 
+    print(result.stderr)
     stop_progressbar()
-    return a
+    return result
 
 
 if __name__ == "__main__":
@@ -45,5 +54,6 @@ if __name__ == "__main__":
     launch_download(ydl_opts,url)"""
     #print(get_url_info())
     #yt = ["yt-dlp", "-f bv*[height>=360]+ba", "-x", "https://www.youtube.com/watch?v=dQw4w9WgXcQ","-P ", "-ovideos/%(title)s.%(ext)s"]
-    yt = ["yt-dlp", "-f bv*[height>=quality]+ba", "-x","--audio-format mp3", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "-P ./tmp", "-o./videos/%(title)s.%(ext)s"]
-    print(launch_download_sub(yt))
+    """yt = ["yt-dlp", "-f", "bv*[height>=quality]+ba", "-x","--audio-format", "mp3", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "-P", "./tmp", "-o./videos/%(title)s.%(ext)s"]
+    print(launch_download_sub(yt))"""
+    get_url_info(r"https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1")

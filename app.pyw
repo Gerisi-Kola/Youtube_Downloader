@@ -1,32 +1,36 @@
+import sys
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
+from tkinter.scrolledtext import ScrolledText # Create the text box
 #    ----    ----
 import path
 import download_manager
-import json_controler as json
+import files_controller as File
+from stdout import RedirectText # Transfer the print to the text box
+
 
 class TkApp:
     def __init__(self, settings: dict):
-        
         #   ----    ----    Settings   ----    ----
-        self.settings = settings["current_settings"]
-        self.original_settings = settings["original_settings"]
-        self.colors = settings["colors"]["default"]
-        self.bnt_color = self.colors["button_colors"]
-        self.progressbar_color = self.colors["progressbar"]
-        self.settings["tmp_folder_absolut"] = path.get_absolut_path(self.settings["tmp_folder"])
+        self.SETTINGS          = dict(settings["current_settings"])
+        self.ORIGINAL_SETTINGS = dict(settings["original_settings"])
+        self.COLORS            = dict(settings["colors"]["default"])
+        self.BNT_COLORS        = dict(self.COLORS["button_colors"])
+        self.PROGRESSBAR_COLOR = dict(self.COLORS["progressbar"])
+        self.PATHS             = dict(settings["paths"])
+        self.SETTINGS["tmp_folder_absolut"] = path.get_absolut_path(self.SETTINGS["tmp_folder"])
         
         #   ----    ----    Window creation   ----    ----
         self.root = tk.Tk()
         self.root.geometry("800x600")
         self.root.title("Youtube mp4/mp3")
-        self.root.configure(background = self.colors["bg"])
-        title_label = tk.Label(self.root,text="YouTube Downloader", bg=self.colors["bg"], font="bold 20")
+        self.root.configure(background = self.COLORS["bg"])
+        title_label = tk.Label(self.root,text="YouTube Downloader", bg=self.COLORS["bg"], font="bold 20")
         title_label.pack(pady=30)
         try:
             path.taskbar_icon()
-            self.root.iconbitmap(r"./image/ico/YouTubeDownloader.ico")
+            self.root.iconbitmap(self.PATHS['ico'])
         except Exception as e:
             print(f"Can not load ico : {e}")
         
@@ -39,11 +43,11 @@ class TkApp:
         self.style.theme_use("clam")
         self.style.configure("TButton",
                             padding=11,
-                            background=self.bnt_color["background"],
-                            troughcolor=self.bnt_color["troughcolor"],
-                            bordercolor=self.bnt_color["bordercolor"],
-                            lightcolor=self.bnt_color["lightcolor"],
-                            darkcolor=self.bnt_color["darkcolor"]
+                            background=self.BNT_COLORS["background"],
+                            troughcolor=self.BNT_COLORS["troughcolor"],
+                            bordercolor=self.BNT_COLORS["bordercolor"],
+                            lightcolor=self.BNT_COLORS["lightcolor"],
+                            darkcolor=self.BNT_COLORS["darkcolor"]
                             )
         self.style.configure("TEntry",
                             padding=8,
@@ -56,17 +60,17 @@ class TkApp:
                             font="bold 15",
                             )
         self.style.configure("Horizontal.TProgressbar",
-                            background = self.progressbar_color["background"],   # Barre
-                            troughcolor = self.progressbar_color["troughcolor"],  # Fond
-                            bordercolor = self.progressbar_color["bordercolor"],  # Bordure légère
-                            lightcolor = self.progressbar_color["lightcolor"],   # Lumière
-                            darkcolor = self.progressbar_color["darkcolor"],    # Ombre verte
+                            background = self.PROGRESSBAR_COLOR["background"],   # Barre
+                            troughcolor = self.PROGRESSBAR_COLOR["troughcolor"],  # Fond
+                            bordercolor = self.PROGRESSBAR_COLOR["bordercolor"],  # Bordure légère
+                            lightcolor = self.PROGRESSBAR_COLOR["lightcolor"],   # Lumière
+                            darkcolor = self.PROGRESSBAR_COLOR["darkcolor"],    # Ombre verte
                             )
         self.style.configure("TFrame",
-                            background=self.colors["bg"],
+                            background=self.COLORS["bg"],
                             )
         self.style.configure("TLabel",
-                            background=self.colors["bg"]
+                            background=self.COLORS["bg"]
                             )
         self.style.configure("MP3.TButton",
                             )
@@ -81,6 +85,8 @@ class TkApp:
         self.progress_frame = ttk.Frame(self.top_frame)
         self.progress_frame.pack(expand="yes")
         
+        self.stdout_frame = ttk.Frame(self.root)
+        self.stdout_frame.pack(side="bottom",fill="x")
         self.settings_frame = ttk.Frame(self.root)
         self.settings_frame.pack(side="bottom", pady=20)
         self.mp4_mp3_frame = ttk.Frame(self.settings_frame)
@@ -141,7 +147,7 @@ class TkApp:
                                     self.settings_frame,
                                     text = "Open Folder",
                                     command=lambda : path.open_file_explorer\
-                                            (self.settings["save_folder"]),
+                                            (self.SETTINGS["save_folder"]),
                                     takefocus=False
                                     )
         self.open_folder_button.pack(expand="yes",side="left")
@@ -153,12 +159,20 @@ class TkApp:
         self.quality_option_menu = ttk.OptionMenu(
                                         self.settings_frame,
                                         self.option_var,
-                                        self.settings["video_quality"],
-                                        *self.settings["all_video_quality"],
+                                        self.SETTINGS["video_quality"],
+                                        *self.SETTINGS["all_video_quality"],
                                         command=self.change_quality
                                         )
         self.quality_option_menu.pack(side="right")
         
+        #   ----    ----    Standard Output    ----    ----
+        # Creation of the text box
+        text = ScrolledText(self.stdout_frame, height=8, state="disabled")
+        text.pack(side="bottom",fill="x")#padx=10, pady=10)
+        # Define the text box as the standard output
+        stdout = RedirectText(text)
+        sys.stdout = stdout
+        sys.stderr = stdout
         
         
         self.root.mainloop()
@@ -166,8 +180,9 @@ class TkApp:
     
     
     def get_search(self) -> None:
+        """ Get the text wrote by the user in the 'search bar' """
         self.url = self.search_entry.get()
-        self.dl.download_and_save_threads_manager(self.settings,
+        self.dl.download_and_save_threads_manager(self.SETTINGS,
                                     self.url,
                                     self.start_progressbar,
                                     self.stop_progressbar
@@ -180,7 +195,7 @@ class TkApp:
             self.error_progressbar = False
             self.style.configure(
                         "Horizontal.TProgressbar",
-                        background = self.progressbar_color["background"],
+                        background = self.PROGRESSBAR_COLOR["background"],
                         )
     
     def stop_progressbar(self, error=False) -> None:
@@ -189,81 +204,84 @@ class TkApp:
             self.error_progressbar = True
             self.style.configure(
                         "Horizontal.TProgressbar",
-                        background = self.progressbar_color["background_error"],
+                        background = self.PROGRESSBAR_COLOR["background_error"],
                         )
     
     def mp3_command(self) -> None:
-        if not self.settings["audio_only"]:
-            self.settings["audio_only"] = True
+        if not self.SETTINGS["audio_only"]:
+            self.SETTINGS["audio_only"] = True
             self.style.configure("MP3.TButton",
-                            background = self.colors["button_green"]
+                            background = self.COLORS["button_green"]
                             )
             self.style.configure("MP4.TButton",
-                            background = self.colors["button_red"]
+                            background = self.COLORS["button_red"]
                             )
             self.mp3_or_mp4_label.config(text=".mp3")
             
             self.save_new_settings()
     
     def mp4_command(self) -> None:
-        if self.settings["audio_only"]:
-            self.settings["audio_only"] = False
+        if self.SETTINGS["audio_only"]:
+            self.SETTINGS["audio_only"] = False
             self.style.configure("MP4.TButton",
-                            background = self.colors["button_green"]
+                            background = self.COLORS["button_green"]
                             )
             self.style.configure("MP3.TButton",
-                            background = self.colors["button_red"]
+                            background = self.COLORS["button_red"]
                             )
             self.mp3_or_mp4_label.config(text=".mp4")
             
             self.save_new_settings()
     
     def mp3_or_mp4_check(self) -> None:
-        if self.settings["audio_only"]:
+        if self.SETTINGS["audio_only"]:
             self.style.configure("MP3.TButton",
-                            background = self.colors["button_green"]
+                            background = self.COLORS["button_green"]
                             )
             self.style.configure
             self.style.configure("MP4.TButton",
-                            background = self.colors["button_red"]
+                            background = self.COLORS["button_red"]
                             )
             self.mp3_or_mp4_label.config(text=".mp3")
         
-        elif not self.settings["audio_only"]:
+        elif not self.SETTINGS["audio_only"]:
             self.style.configure("MP4.TButton",
-                            background = self.colors["button_green"]
+                            background = self.COLORS["button_green"]
                             )
             self.style.configure("MP3.TButton",
-                            background = self.colors["button_red"]
+                            background = self.COLORS["button_red"]
                             )
             self.mp3_or_mp4_label.config(text=".mp4")
     
     def choice_of_folder(self) -> None:
+        """ Open the file explorer and ask to choice a folder """
         folder = filedialog.askdirectory()
-        self.settings["save_folder"] = folder
+        self.SETTINGS["save_folder"] = folder
         
         self.save_new_settings()
     
     def open_folder(self) -> None:
+        """ Open the file explorer in the current folder """
         filedialog.Directory()
     
     def change_quality(self,quality: str) -> None:
         print(f"quality changed to {quality}")
-        self.settings["video_quality"] = quality
+        self.SETTINGS["video_quality"] = quality
         self.save_new_settings()
     
     def save_new_settings(self) -> None:
+        """ Update the settings and save it in settings.json """
         full_settings = {
-            "current_settings" : self.settings,
-            "original_settings": self.original_settings,
+            "current_settings" : self.SETTINGS,
+            "original_settings": self.ORIGINAL_SETTINGS,
             "colors"           : {
-                "default" : self.colors
+                "default" : self.COLORS
             }
         }
         
-        json.save_json("settings.json", full_settings)
+        File.save_json(self.PATHS["settings_file"], full_settings)
 
 
 if __name__ == "__main__":
-    settings = json.get_json("settings.json")
+    settings = File.get_json("settings.json")
     win = TkApp(settings=settings)

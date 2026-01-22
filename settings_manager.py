@@ -54,10 +54,7 @@ def convert_settings_for_yt_dlp_sub(settings: dict, url: str) -> dict:
     # mp3 or mp4
     if audio_only:
         print("mp3")
-        ydl_opts.append(f"-f bv*[height<={quality}]+ba")
-        ydl_opts.append("-x")
-        ydl_opts.append("--audio-format")
-        ydl_opts.append("mp3")
+        ydl_opts += ["-f", f"bv*[height<={quality}]+ba","-x","--audio-format","mp3"]
     
     # Quality Video
     else:
@@ -74,32 +71,30 @@ def convert_settings_for_yt_dlp_sub(settings: dict, url: str) -> dict:
             q = "137"
         else:
             q = "22" #best ?
-        ydl_opts.append(f"-f {q}")
+        ydl_opts += ["-f", q]
     
     # URL
-    ydl_opts.append(f"{url}")
+    ydl_opts += [url]
     
     # temporary 
-    ydl_opts.append(f"-P")
-    ydl_opts.append(f"{tmp}")
+    ydl_opts += ["-P", tmp]
     
     # File name output
     #ydl_opts.append(f"-o%(title)s.%(ext)s")
     
     # file name and location output 
-    ydl_opts.append("--output")
-    ydl_opts.append(f"{path}/%(title)s.%(ext)s")
+    ydl_opts += ["--output",f"{path}/%(title)s.%(ext)s"]
     
     return ydl_opts
 
 if __name__ == "__main__":
-    from json_controler import get_json
+    import files_controller as File
     import downloader as d
     
     def fini():
         print("fini !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     
-    settings = get_json("settings.json")
+    settings = File.get_json("settings.json")
     settings = settings["current_settings"]
     
     ydl_opts,title,path = convert_settings_for_yt_dlp_sub(settings, "https://www.youtube.com/watch?v=dQw4w9WgXcQ")

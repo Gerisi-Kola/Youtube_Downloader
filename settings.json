@@ -3,7 +3,7 @@
         "audio_only": false,
         "tmp_folder": "./tmp",
         "tmp_folder_absolut": "D:/Programation/Python/Youtube_Download/tmp",
-        "save_folder": "",
+        "save_folder": "C:/Users/Fatmira/Desktop/Nouveau dossier (2)/test",
         "video_quality": "360",
         "all_video_quality": [
             "144",
@@ -50,5 +50,9 @@
                 "darkcolor": "#6B8E23"
             }
         }
+    },
+    "paths" : {
+        "ico" : "./image/ico/YouTubeDownloader.ico",
+        "settings_file" : "./settings.json"
     }
 }
