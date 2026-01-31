@@ -1,0 +1,3 @@
+[submodule "pymod"]
+	path = pymod
+	url = https://github.com/Gerisi-Kola/pymod.git

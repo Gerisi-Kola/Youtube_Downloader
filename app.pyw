@@ -4,10 +4,10 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText # Create the text box
 #    ----    ----
-import path
+import pymod.ico_and_folder as path
 import download_manager
-import files_controller as File
-from stdout import RedirectText # Transfer the print to the text box
+import pymod.files_controller as File
+from pymod.stdout import RedirectText # Transfer the print to the text box
 
 
 class TkApp:
@@ -18,7 +18,7 @@ class TkApp:
         self.COLORS            = dict(settings["colors"]["default"])
         self.BNT_COLORS        = dict(self.COLORS["button_colors"])
         self.PROGRESSBAR_COLOR = dict(self.COLORS["progressbar"])
-        self.PATHS             = dict(settings["paths"])
+        #self.PATHS             = dict(settings["paths"])
         self.SETTINGS["tmp_folder_absolut"] = path.get_absolut_path(self.SETTINGS["tmp_folder"])
         
         #   ----    ----    Window creation   ----    ----
@@ -36,7 +36,7 @@ class TkApp:
         
         self.url = "" #'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         self.error_progressbar = False
-        self.dl = download_manager.DowloadManager()
+        self.dl = download_manager.DownloadManager()
         
         #   ----    ----  Style   ----    ----
         self.style = ttk.Style()
@@ -187,7 +187,6 @@ class TkApp:
                                     self.start_progressbar,
                                     self.stop_progressbar
                                     )
-    
     
     def start_progressbar(self) -> None:
         self.progressbar.start(10)

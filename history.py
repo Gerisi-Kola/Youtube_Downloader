@@ -1,8 +1,8 @@
 import os
 import datetime
 #    ----    ----
-import files_controller as File
-import path
+import pymod.files_controller as File
+import pymod.ico_and_folder as path
 
 def today_history_get(prefix: str ="") -> tuple[dict,str]:
     x = datetime.datetime.now()

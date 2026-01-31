@@ -1,5 +1,6 @@
 import yt_dlp
 import subprocess
+import sys
 
 def get_url_info(url: str) -> dict:
     """ Use yt-dlp embed to get the thumbnail and the title and return a dict of them
@@ -26,12 +27,12 @@ def launch_download_python(download_ops: dict, url: str, stop_progressbar) -> No
 def launch_download_sub(yt: dict, stop_progressbar) -> None:
     """ Download using subprocess and yt-dlp"""
     print(yt)
-    result = subprocess.run(yt, capture_output=True, text=True, shell=True)
-    print(result.stdout) # print est récupérer et envoyer dans la text box 
-    print(result.stderr)
+    with subprocess.Popen(yt,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1,) as process:
+        for line in process.stdout:
+            # ici tu passes explicitement par sys.stdout
+            sys.stdout.write(line)
     stop_progressbar()
-    return result
-
+    return
 
 if __name__ == "__main__":
     """def my_hook(d):

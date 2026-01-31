@@ -1,11 +1,12 @@
 import threading
 #    ----    ----
-import settings_manager as set
-import downloader as dl
+#import settings_manager as set
+#import downloader as dl
+import pymod._yt_dlp as yt_dlp
 import history as his
 
 
-class DowloadManager:
+class DownloadManager:
     def __init__(self):
         self.history,self.history_file = his.today_history_get()
         self.all_error_log,self.error_log_file = his.today_history_get("Error_")
@@ -28,22 +29,18 @@ class DowloadManager:
         try:
             #   ----    ----    Get thumbnail   ----    ----
             try:
-                info_video = dl.get_url_info(url)
+                info_video = yt_dlp.get_multiple_info(url, title=True, thumbnail_url=True, url_copy=True)
             except Exception as e:
                 error_info_video = e
             
             # ici il faut afficher la miniature
             
             #   ----    ----    Download   ----    ----
-            try:
-                raise
-                download_ops_python = set.convert_settings_for_yt_dlp_python(settings)
-                dl.launch_download_python(download_ops_python, url, stop_progressbar)
-            except Exception as e:
-                print("\n\nsubprocess\n\n")
-                #error_yt_dlp_python = e
-                download_ops_subprocess = set.convert_settings_for_yt_dlp_sub(settings, url)
-                dl.launch_download_sub(download_ops_subprocess, stop_progressbar)
+            print("\n\nsubprocess\n\n")
+            #error_yt_dlp_python = e
+            #download_ops_subprocess = set.convert_settings_for_yt_dlp_sub(settings, url)
+            yt_dlp.download_video_h264(url)
+            stop_progressbar()
             
             #   ----    ----    Save in log   ----    ----
             try:
@@ -97,6 +94,6 @@ class DowloadManager:
 
 
 if __name__ == "__main__":
-    d = DowloadManager()
+    d = DownloadManager()
     """info_video = dl.get_url_info("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     d.history_manager("https://www.youtube.com/watch?v=dQw4w9WgXcQ",info_video)"""

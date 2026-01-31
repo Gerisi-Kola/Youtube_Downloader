@@ -1,4 +1,4 @@
-import path as p
+import pymod.ico_and_folder as p
 
 def convert_settings_for_yt_dlp_python(settings: dict) -> dict:
     ydl_opts = {}
@@ -88,7 +88,7 @@ def convert_settings_for_yt_dlp_sub(settings: dict, url: str) -> dict:
     return ydl_opts
 
 if __name__ == "__main__":
-    import files_controller as File
+    import pymod.files_controller as File
     import downloader as d
     
     def fini():
