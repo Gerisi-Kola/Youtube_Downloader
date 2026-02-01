@@ -1,7 +1,5 @@
 import threading
 #    ----    ----
-#import settings_manager as set
-#import downloader as dl
 import pymod._yt_dlp as yt_dlp
 import history as his
 
@@ -10,7 +8,6 @@ class DownloadManager:
     def __init__(self):
         self.history,self.history_file = his.today_history_get()
         self.all_error_log,self.error_log_file = his.today_history_get("Error_")
-        #print(f"{self.all_error_log=}\n\n{self.error_log_file=}")
     
     def progressbar_manager(self,progressbar) -> None:  
         progressbar.start()
@@ -23,7 +20,7 @@ class DownloadManager:
         a = his.save_error_history(self.all_error_log,url,error)
         his.save_history(self.error_log_file,a)
     
-    def download_and_save_launch_in_thread(self, settings: dict, url: str, stop_progressbar) -> None:
+    def download_and_save_launch_in_thread(self, url: str, stop_progressbar) -> None:
         error_info_video,error_yt_dlp_python = "Ok","Ok"
         error_yt_dlp_sub,error_history = "Ok","Ok"
         try:
@@ -37,9 +34,7 @@ class DownloadManager:
             
             #   ----    ----    Download   ----    ----
             print("\n\nsubprocess\n\n")
-            #error_yt_dlp_python = e
-            #download_ops_subprocess = set.convert_settings_for_yt_dlp_sub(settings, url)
-            yt_dlp.download_video_h264(url)
+            yt_dlp.download_h264(url,"./videos/")
             stop_progressbar()
             
             #   ----    ----    Save in log   ----    ----
@@ -76,14 +71,12 @@ class DownloadManager:
     
     
     
-    def download_and_save_threads_manager(self,settings: dict, url: str, start_progressbar, stop_progressbar) -> None:
+    def download_and_save_threads_manager(self, url: str, start_progressbar, stop_progressbar) -> None:
         try :
-            start_progressbar()
+            #start_progressbar()
             thread = threading.Thread(target=lambda: self.download_and_save_launch_in_thread(
-                                                        settings,
                                                         url,
-                                                        stop_progressbar
-                                                        ))
+                                                        stop_progressbar))
             thread.start()
             
         except Exception as e:

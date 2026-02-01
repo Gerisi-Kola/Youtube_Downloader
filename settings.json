@@ -50,5 +50,9 @@
                 "darkcolor": "#6B8E23"
             }
         }
+    },
+    "path":{
+        "ico" : "/image/ico/rect12.ico",
+        "settings_file" : "/settings.json"
     }
 }

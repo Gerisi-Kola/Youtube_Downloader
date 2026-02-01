@@ -29,7 +29,7 @@ def today_history_get(prefix: str ="") -> tuple[dict,str]:
         print("file exist")
         
         print(f"{history_file=}\n\n{type(history_file)=}")
-        return File.get_json(history_file), history_file
+        return File.get_file_content_json(history_file), history_file
     else:
         print("file doesn't exist")
         return {}, history_file

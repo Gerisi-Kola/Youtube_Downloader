@@ -18,18 +18,18 @@ class TkApp:
         self.COLORS            = dict(settings["colors"]["default"])
         self.BNT_COLORS        = dict(self.COLORS["button_colors"])
         self.PROGRESSBAR_COLOR = dict(self.COLORS["progressbar"])
-        #self.PATHS             = dict(settings["paths"])
+        self.PATHS             = dict(settings["path"])
         self.SETTINGS["tmp_folder_absolut"] = path.get_absolut_path(self.SETTINGS["tmp_folder"])
         
         #   ----    ----    Window creation   ----    ----
         self.root = tk.Tk()
-        self.root.geometry("800x600")
+        self.root.geometry("825x600")
         self.root.title("Youtube mp4/mp3")
         self.root.configure(background = self.COLORS["bg"])
         title_label = tk.Label(self.root,text="YouTube Downloader", bg=self.COLORS["bg"], font="bold 20")
         title_label.pack(pady=30)
         try:
-            path.taskbar_icon()
+            path.taskbar_icon(self.PATHS['ico'])
             self.root.iconbitmap(self.PATHS['ico'])
         except Exception as e:
             print(f"Can not load ico : {e}")
@@ -182,7 +182,7 @@ class TkApp:
     def get_search(self) -> None:
         """ Get the text wrote by the user in the 'search bar' """
         self.url = self.search_entry.get()
-        self.dl.download_and_save_threads_manager(self.SETTINGS,
+        self.dl.download_and_save_threads_manager(
                                     self.url,
                                     self.start_progressbar,
                                     self.stop_progressbar
@@ -282,5 +282,5 @@ class TkApp:
 
 
 if __name__ == "__main__":
-    settings = File.get_json("settings.json")
+    settings = File.get_file_content_json("settings.json")
     win = TkApp(settings=settings)
