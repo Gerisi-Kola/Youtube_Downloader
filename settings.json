@@ -1,6 +1,6 @@
 {
     "current_settings": {
-        "audio_only": false,
+        "audio_only": true,
         "tmp_folder": "./tmp",
         "tmp_folder_absolut": "D:/Programation/Python/Youtube_Download/tmp",
         "save_folder": "",
@@ -51,8 +51,9 @@
             }
         }
     },
-    "path":{
-        "ico" : "/image/ico/rect12.ico",
-        "settings_file" : "/settings.json"
+    "path": {
+        "ico": "./image/ico/YouTubeDownloader.ico",
+        "setting_button": "./image/ico/g27.png",
+        "settings_file": "./settings.json"
     }
 }

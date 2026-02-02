@@ -51,12 +51,13 @@ def get_history_number(history: dict = {}) -> int:
 def save_history_converter(history: dict, url: str, video_info: dict) -> dict:
     time = get_current_time()
     key = get_history_number(history)
-    new_history = {
+    new_history = video_info
+    """new_history = {
         "thumbnail" : video_info["thumbnail"],
         "title" : video_info["title"],
-        "time" : time,
+        "Download_date" : time,
         "url" : url
-    }
+    }"""
     history[f"{key}"] = new_history
     return history
 

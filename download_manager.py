@@ -20,21 +20,24 @@ class DownloadManager:
         a = his.save_error_history(self.all_error_log,url,error)
         his.save_history(self.error_log_file,a)
     
-    def download_and_save_launch_in_thread(self, url: str, stop_progressbar) -> None:
+    def download_and_save_launch_in_thread(self, url: str, stop_progressbar,settings) -> None:
         error_info_video,error_yt_dlp_python = "Ok","Ok"
         error_yt_dlp_sub,error_history = "Ok","Ok"
         try:
             #   ----    ----    Get thumbnail   ----    ----
             try:
-                info_video = yt_dlp.get_multiple_info(url, title=True, thumbnail_url=True, url_copy=True)
+                info_video = yt_dlp.get_multiple_info(url, title=True,thumbnail_download=True, thumbnail_url=True, url_return=True)
             except Exception as e:
                 error_info_video = e
             
             # ici il faut afficher la miniature
             
             #   ----    ----    Download   ----    ----
-            print("\n\nsubprocess\n\n")
-            yt_dlp.download_h264(url,"./videos/")
+            print("\n\n          ------          Download !!          ------\n\n")
+            if settings["audio_only"]:
+                yt_dlp.download_mp3(url,"./videos/")
+            else:
+                yt_dlp.download_h264(url,"./videos/",size=settings["video_quality"])
             stop_progressbar()
             
             #   ----    ----    Save in log   ----    ----
@@ -71,14 +74,15 @@ class DownloadManager:
     
     
     
-    def download_and_save_threads_manager(self, url: str, start_progressbar, stop_progressbar) -> None:
+    def download_and_save_threads_manager(self, url: str, start_progressbar, stop_progressbar,settings) -> None:
         try :
-            #start_progressbar()
-            thread = threading.Thread(target=lambda: self.download_and_save_launch_in_thread(
+            start_progressbar()
+            th = threading.Thread(daemon=True,target=lambda: self.download_and_save_launch_in_thread(
                                                         url,
-                                                        stop_progressbar))
-            thread.start()
-            
+                                                        stop_progressbar,
+                                                        settings))
+            th.start()
+        
         except Exception as e:
             stop_progressbar()
             print("Échec in download_and_save_threads_manager !!!!!!!!!!!!!!!!!!!!!!     ", e)
